@@ -1,0 +1,19 @@
+{
+  "seedCode": "release-3-business-foundation",
+  "status": "draft_preliminary_only",
+  "scope": {
+    "tenantId": "tenant-spm-01",
+    "projectId": "project-spm-01",
+    "siteId": "site-spm-01"
+  },
+  "modules": [
+    "inspection_due_tracking",
+    "workpack_skeleton",
+    "certification_support_register",
+    "evidence_checklist",
+    "evidence_pack_preview",
+    "business_kpi_dashboard"
+  ],
+  "guardrail": "Release 3 data is demo support data only. It does not make final technical, certification, legal, safety, RBI, RLA, FFS, interval, or risk acceptance decisions.",
+  "sourceBasis": "Master FRD SRS/Master BPMN Workflow Pack/UI UX Design Pack/Data Model Pack/Addendum MVP+ Rev. 1"
+}

@@ -1,0 +1,34 @@
+{
+  "seedCode": "release_1_data_document_foundation_demo",
+  "status": "draft_preliminary_only",
+  "purpose": "Demo-only Release 1 asset, document, import staging, and validation queue data. No real asset, certification, legal, RBI, RLA, FFS, fit-for-operation, layak operasi, or safety decision is represented.",
+  "tenantId": "tenant-spm-01",
+  "projectId": "project-spm-01",
+  "siteId": "site-spm-01",
+  "sourceBasis": "Data Model Pack/PRD URS/UI UX Design Pack/Addendum MVP+ Rev. 1",
+  "contents": {
+    "assetHierarchy": [
+      "facility",
+      "system",
+      "subsystem",
+      "equipment",
+      "component",
+      "cml_tml_point"
+    ],
+    "documents": [
+      "document",
+      "document_version",
+      "document_link"
+    ],
+    "importStaging": [
+      "import_batch",
+      "import_row",
+      "validation_issue"
+    ]
+  },
+  "guardrails": [
+    "Imports remain staged until validation and authorized review.",
+    "Document upload API creates metadata/object-key intent only in this release.",
+    "Baseline promotion, certification readiness, RBI final output, and evidence-pack export are out of scope."
+  ]
+}

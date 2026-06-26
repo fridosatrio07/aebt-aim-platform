@@ -1,0 +1,371 @@
+# Task Completion Log
+
+## Release 0 - Platform Foundation
+
+### R0-01 - Repo and Environment Baseline
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/README.md`, `.env.example`, `.gitignore`, workspace manifests, Release 0 docs
+- Implementation summary: Documented and scaffolded the `main/` workspace, commands, environment assumptions, and protected boundaries.
+- Checks run: `pnpm run release0:verify` passed.
+- Review status: Done, pending human review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Confirm Git repository status and production environment.
+
+### R0-02 - Database Foundation
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/packages/database/**`, `main/scripts/migration-check.mjs`
+- Implementation summary: Added Prisma PostgreSQL/TimescaleDB foundation schema for tenant/project/site/user/role/permission/audit/seed records only.
+- Checks run: `pnpm run migration:check`, Prisma validate, and `pnpm run release0:verify` passed.
+- Review status: Done, pending UBT/IT review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Final physical schema remains open; no migrations were run.
+
+### R0-03 - API Convention
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/packages/shared/src/api.ts`, `main/apps/api/**`
+- Implementation summary: Added REST/JSON response/error/pagination helpers and NestJS foundation endpoints under `v1`.
+- Checks run: `pnpm run typecheck`, `pnpm run build`, and `pnpm run release0:verify` passed.
+- Review status: Done, pending API contract review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Final API contract details remain open.
+
+### R0-04 - Tenant Context and Access Scope
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/packages/shared/src/tenant-context.ts`, API/web foundation scope usage
+- Implementation summary: Added tenant/project/site scope normalization and same-scope enforcement.
+- Checks run: Shared tests cover same-tenant allow and cross-tenant block; `pnpm run release0:verify` passed.
+- Review status: Done, pending UBT/IT review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Final access scope behavior for client and external users remains open.
+
+### R0-05 - RBAC Foundation
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/packages/shared/src/rbac.ts`, `main/apps/api/src/foundation/*`
+- Implementation summary: Added application-level role-permission primitives and permission checks aligned to tenant scope.
+- Checks run: Shared RBAC tests and `pnpm run release0:verify` passed.
+- Review status: Done, pending UBT/IT + Project Owner review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Final RBAC matrix remains open.
+
+### R0-06 - Audit Log Foundation
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/packages/shared/src/audit.ts`, `main/packages/database/prisma/schema.prisma`, `main/apps/api/src/foundation/*`
+- Implementation summary: Added audit event builder, in-memory Release 0 audit sink, and Prisma AuditLog foundation model.
+- Checks run: Shared audit test and `pnpm run release0:verify` passed.
+- Review status: Done, pending UBT/IT review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Persistent audit behavior must be implemented in later tasks with migrations.
+
+### R0-07 - Global UI Shell
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/apps/web/**`
+- Implementation summary: Added Next.js global shell with tenant/project/site selectors, role-aware navigation placeholders, foundation table, and visible draft/preliminary decision boundary.
+- Checks run: Web typecheck/build and `pnpm run release0:verify` passed.
+- Review status: Done, pending UX/business review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Browser visual QA was not run in this turn.
+
+### R0-08 - Seed Dummy Project SPM-01
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/seed/spm-01.json`, `main/packages/shared/src/seed-spm-01.ts`
+- Implementation summary: Added controlled dummy seed dataset for tenant/project/site/roles with explicit non-decision disclaimer.
+- Checks run: Static seed safety check and `pnpm run release0:verify` passed.
+- Review status: Done, pending Project Owner review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: Pilot dataset remains TBD.
+
+### R0-09 - CI Quality Gates
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: `main/package.json`, `main/scripts/**`, workspace package scripts
+- Implementation summary: Added lint, typecheck, test, build, migration-check, analytics-check, and aggregate Release 0 verification scripts.
+- Checks run: `pnpm run release0:verify` passed.
+- Review status: Done, pending CI environment review.
+- Handoff link/notes: See `docs/handoff/RELEASE_0_HANDOFF.md`.
+- Open follow-up: CI provider/workflow remains TBD.
+
+## Release 1 - Data & Document Foundation
+
+### R1-01 - Asset Hierarchy Schema
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Extended Prisma schema with Facility, AssetSystem, AssetSubsystem, Equipment, Component, CmlTmlPoint, and ThicknessReading foundation models.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-02 - Asset Registry List API
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added Release1DataFoundation.listAssets with tenant scope, RBAC permission, pagination, filtering, sorting, and audit event generation.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-03 - Asset Registry UI List
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Replaced the Release 0 placeholder shell with a Release 1 workbench including asset registry table, default/filter chips, and state indicators.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-04 - Asset Detail Shell
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added asset detail drawer/shell in the workbench with identity, hierarchy, linked documents, module status placeholders, and non-decision status display.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-05 - Document Metadata Schema
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Extended Prisma schema with Document, DocumentVersion, and DocumentLink foundation models.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-06 - Document Upload API
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added document upload intent API with required metadata validation, tenant scope check, RBAC, audit event, S3-compatible bucket/object-key placement, and draft/preliminary boundary.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-07 - Document Repository UI
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added document repository table with metadata, status, version, link count, filter chips, and upload action affordance.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-08 - Import Staging Schema
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Extended Prisma schema with ImportBatch, ImportRow, and ValidationIssue foundation models.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-09 - Excel CSV Import Parser
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added CSV/TSV parser and normalized Excel-row import support into staged import preview.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+### R1-10 - Validation Queue UI
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-1.ts; main/packages/shared/tests/release-1.test.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/data-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-1-data-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-1.mjs; main/scripts/release1-verify.mjs; main/README.md; docs/tasks/release-1/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added validation queue data model, API list, and UI table for open issues.
+- Checks run: `pnpm run release1:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_1_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, object-storage presigned upload provider, native XLSX binary extraction, final RBAC matrix, and pilot dataset remain open as applicable.
+
+## Release 2 - Work Queue & Operational Flow
+
+### R2-01 - Generic Action Item Model
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added shared Release 2 action item types, statuses, priorities, due-state helper, and SPM-01 demo action items.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-02 - My Work API
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added Release2WorkflowFoundation.listMyWork with tenant scope, RBAC, owner/role filtering, pagination, filtering, sorting, and audit events.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-03 - My Work UI
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Replaced the Release 1 first screen with a Release 2 task-first workbench.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-04 - Reviewer Work Queue Backend
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added Release2WorkflowFoundation.listReviewerQueue for pending review, revision-requested, and escalated items.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-05 - Reviewer Work Queue UI
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added reviewer queue table with priority, authority, aging, preliminary risk level, evidence count, and linked object.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-06 - Approval Workflow Generic
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added generic approval workflow and workflow transition types plus Prisma models.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-07 - Notification Digest Skeleton
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added notification digest and digest item models/types.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-08 - Dashboard to Action Shell
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added dashboard action card service for My Work, pending review, overdue, missing evidence, escalated, and exports pending review.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+### R2-09 - Export Log Foundation
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-2.ts; main/packages/shared/tests/release-2.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/types.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/workflow-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-2-workflow-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-2.mjs; main/scripts/release2-verify.mjs; main/package.json; main/README.md; docs/tasks/release-2/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Added ExportLog schema/type and shared create/list export log methods.
+- Checks run: `pnpm run release2:verify` passed.
+- Review status: Done, pending human/UBT/IT/Project Owner review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_2_HANDOFF.md`.
+- Open follow-up: Final schema/migration execution, workflow authority matrix, digest schedule/suppression policy, export approval policy, final RBAC matrix, and pilot operating metrics remain open as applicable.
+
+## Release 3 - First Business Modules
+
+### R3-01 through R3-10
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-3.ts; main/packages/shared/tests/release-3.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/index.ts; main/packages/database/prisma/schema.prisma; main/apps/api/src/business-foundation/*; main/apps/api/src/app.module.ts; main/apps/api/src/foundation/foundation.service.ts; main/apps/web/src/components/AppShell.tsx; main/seed/release-3-business-foundation.json; main/scripts/migration-check.mjs; main/scripts/verify-release-3.mjs; main/scripts/release3-verify.mjs; main/package.json; main/README.md; docs/tasks/release-3/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Implemented Release 3 inspection due tracking, workpack skeletons, certification support register, evidence checklist, evidence pack preview, and business KPI dashboard wiring.
+- Checks run: `pnpm run release3:verify` passed, after separate lint/typecheck/test/build/migration/analytics checks also passed.
+- Review status: Done, pending human/UBT/IT/Project Owner/Q&C/Legal/engineer/inspector/SME review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_3_HANDOFF.md`.
+- Open follow-up: Final migration execution, final physical schema/indexes, final API/RBAC contracts, inspection/certification/evidence operating policy, pilot dataset, production environment, and Release 4 RBI methodology start gate remain open.
+
+## Release 4 - Integrity/RBI Controlled Skeleton
+
+### R4-01 through R4-10
+
+- Date: 2026-06-26
+- Agent/session: Codex
+- Branch: Not applicable; `Source Code` is not currently a Git repository
+- Files changed: main/packages/shared/src/release-4.ts; main/packages/shared/tests/release-4.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/index.ts; main/apps/api/src/integrity-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/scripts/verify-release-4.mjs; main/scripts/release4-verify.mjs; main/package.json; docs/tasks/release-4/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md
+- Implementation summary: Implemented Release 4 RBI candidate routing schema, RBI candidate UI, RBI assessment shell, RBI assessment stepper UI, operating data input, damage mechanism review placeholder, PoF/CoF helper interface, preliminary risk ranking record, RBI review and approval workflow, and risk register linkage.
+- Checks run: `pnpm run release4:verify` should be run after lint/typecheck/test/build/migration/analytics checks pass.
+- Review status: Done, pending human/UBT/IT/Project Owner/SME/Q&C review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_4_HANDOFF.md`.
+- Open follow-up: Final migration execution, final physical schema/indexes, final API/RBAC contracts, SME-approved RBI methodology baseline (OD-006), Release 4 start gate closure (OD-018), production deployment, and pilot dataset remain open.

@@ -1,0 +1,34 @@
+{
+  "name": "aim-platform-main",
+  "version": "0.0.0-release-4",
+  "private": true,
+  "description": "AIM Platform Release 4 integrity/RBI controlled skeleton workspace",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@10.0.0",
+  "workspaces": [
+    "packages/shared",
+    "packages/database",
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "lint": "node scripts/lint-release-0.mjs",
+    "typecheck": "node scripts/pnpm-recursive.mjs typecheck",
+    "test": "node scripts/pnpm-recursive.mjs test && node scripts/verify-release-0.mjs",
+    "build": "node scripts/pnpm-recursive.mjs build",
+    "migration:check": "node scripts/migration-check.mjs",
+    "analytics:check": "python -m compileall services/analytics/app",
+    "release0:verify": "node scripts/release0-verify.mjs",
+    "release1:verify": "node scripts/release1-verify.mjs",
+    "release2:verify": "node scripts/release2-verify.mjs",
+    "release3:verify": "node scripts/release3-verify.mjs",
+    "release4:verify": "node scripts/release4-verify.mjs",
+    "dev:web": "pnpm --filter @aim-platform/web dev",
+    "dev:api": "pnpm --filter @aim-platform/api start:dev"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  }
+}

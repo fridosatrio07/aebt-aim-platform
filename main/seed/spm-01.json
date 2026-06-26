@@ -1,0 +1,34 @@
+{
+  "seedId": "SPM-01",
+  "status": "dummy_for_release_0_only",
+  "decisionBoundary": "Draft/preliminary only. No real asset, certificate, RBI, RLA, FFS, safety, legal, interval, or risk acceptance decision is represented.",
+  "tenant": {
+    "id": "tenant-spm-01",
+    "code": "SPM",
+    "name": "SPM Dummy Tenant"
+  },
+  "project": {
+    "id": "project-spm-01",
+    "code": "SPM-01",
+    "name": "SPM-01 Dummy AIM Pilot Project"
+  },
+  "site": {
+    "id": "site-spm-01",
+    "code": "SPM-SITE-01",
+    "name": "SPM Dummy Site 01"
+  },
+  "roles": [
+    "platform_administrator",
+    "system_administrator",
+    "inspector",
+    "rbi_engineer",
+    "certification_team",
+    "document_controller",
+    "qc_reviewer",
+    "legal_reviewer",
+    "management_reviewer",
+    "client_user",
+    "auditor_viewer",
+    "helpdesk_support"
+  ]
+}

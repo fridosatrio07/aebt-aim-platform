@@ -1,0 +1,1096 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Release 3 foundation schema.
+// R1 adds controlled asset, document, import staging, and validation foundations.
+// R2 adds generic action/work queue, generic approval transition, notification digest, and export log foundations.
+// R3 adds inspection due tracking, workpack skeletons, certification support register, evidence checklist/pack preview, and business KPI snapshots.
+// Do not add RBI/risk, anomaly workflow, final technical decision, or interval extension tables until later approved tasks are active.
+
+model Tenant {
+  id        String       @id @default(uuid())
+  code      String       @unique
+  name      String
+  status    TenantStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  clients   Client[]
+  projects  Project[]
+  users     UserProfile[]
+  auditLogs AuditLog[]
+  facilities Facility[]
+  documents Document[]
+  importBatches ImportBatch[]
+  actionItems ActionItem[]
+  approvalWorkflows GenericApprovalWorkflow[]
+  notificationDigests NotificationDigest[]
+  exportLogs ExportLog[]
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  tenantId  String
+  code      String
+  name      String
+  sector    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  projects  Project[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId])
+}
+
+model Project {
+  id        String        @id @default(uuid())
+  tenantId  String
+  clientId  String?
+  code      String
+  name      String
+  status    BaselineStatus @default(DRAFT_PRELIMINARY)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  tenant    Tenant        @relation(fields: [tenantId], references: [id])
+  client    Client?       @relation(fields: [clientId], references: [id])
+  sites     Site[]
+  roles     Role[]
+  facilities Facility[]
+  documents Document[]
+  importBatches ImportBatch[]
+  actionItems ActionItem[]
+  approvalWorkflows GenericApprovalWorkflow[]
+  notificationDigests NotificationDigest[]
+  exportLogs ExportLog[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, clientId])
+}
+
+model Site {
+  id        String         @id @default(uuid())
+  tenantId  String
+  projectId String
+  code      String
+  name      String
+  status    BaselineStatus @default(DRAFT_PRELIMINARY)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  project   Project        @relation(fields: [projectId], references: [id])
+  facilities Facility[]
+  documents Document[]
+  importBatches ImportBatch[]
+  actionItems ActionItem[]
+  approvalWorkflows GenericApprovalWorkflow[]
+  notificationDigests NotificationDigest[]
+  exportLogs ExportLog[]
+
+  @@unique([tenantId, projectId, code])
+  @@index([tenantId, projectId])
+}
+
+model Facility {
+  id                String            @id @default(uuid())
+  tenantId          String
+  projectId         String
+  siteId            String
+  code              String
+  name              String
+  dataQualityStatus DataQualityStatus @default(DRAFT)
+  reviewStatus      ReviewStatus      @default(DRAFT)
+  sourceBasis       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  tenant            Tenant            @relation(fields: [tenantId], references: [id])
+  project           Project           @relation(fields: [projectId], references: [id])
+  site              Site              @relation(fields: [siteId], references: [id])
+  systems           AssetSystem[]
+  equipment         Equipment[]
+
+  @@unique([tenantId, projectId, siteId, code])
+  @@index([tenantId, projectId, siteId])
+}
+
+model AssetSystem {
+  id                String            @id @default(uuid())
+  tenantId          String
+  projectId         String
+  siteId            String
+  facilityId        String
+  code              String
+  name              String
+  dataQualityStatus DataQualityStatus @default(DRAFT)
+  reviewStatus      ReviewStatus      @default(DRAFT)
+  sourceBasis       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  facility          Facility          @relation(fields: [facilityId], references: [id])
+  subsystems        AssetSubsystem[]
+  equipment         Equipment[]
+
+  @@unique([tenantId, facilityId, code])
+  @@index([tenantId, projectId, siteId])
+}
+
+model AssetSubsystem {
+  id                String            @id @default(uuid())
+  tenantId          String
+  projectId         String
+  siteId            String
+  systemId          String
+  code              String
+  name              String
+  dataQualityStatus DataQualityStatus @default(DRAFT)
+  reviewStatus      ReviewStatus      @default(DRAFT)
+  sourceBasis       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  system            AssetSystem       @relation(fields: [systemId], references: [id])
+  equipment         Equipment[]
+
+  @@unique([tenantId, systemId, code])
+  @@index([tenantId, projectId, siteId])
+}
+
+model Equipment {
+  id                      String            @id @default(uuid())
+  tenantId                String
+  projectId               String
+  siteId                  String
+  facilityId              String
+  systemId                String
+  subsystemId             String
+  equipmentTag            String
+  equipmentName           String
+  equipmentType           String
+  service                 String?
+  dataQualityStatus       DataQualityStatus @default(DRAFT)
+  reviewStatus            ReviewStatus      @default(DRAFT)
+  sourceBasis             String
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  facility                Facility          @relation(fields: [facilityId], references: [id])
+  system                  AssetSystem       @relation(fields: [systemId], references: [id])
+  subsystem               AssetSubsystem    @relation(fields: [subsystemId], references: [id])
+  components              Component[]
+  cmlTmlPoints            CmlTmlPoint[]
+
+  @@unique([tenantId, siteId, equipmentTag])
+  @@index([tenantId, projectId, siteId, equipmentType])
+  @@index([tenantId, facilityId, systemId, subsystemId])
+}
+
+model Component {
+  id                String            @id @default(uuid())
+  tenantId          String
+  equipmentId       String
+  componentTag      String
+  componentType     String
+  material          String?
+  dataQualityStatus DataQualityStatus @default(DRAFT)
+  reviewStatus      ReviewStatus      @default(DRAFT)
+  sourceBasis       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  equipment         Equipment         @relation(fields: [equipmentId], references: [id])
+  cmlTmlPoints      CmlTmlPoint[]
+
+  @@unique([tenantId, equipmentId, componentTag])
+  @@index([tenantId, equipmentId])
+}
+
+model CmlTmlPoint {
+  id                  String             @id @default(uuid())
+  tenantId            String
+  equipmentId         String
+  componentId         String?
+  pointCode           String
+  locationDescription String
+  dataQualityStatus   DataQualityStatus  @default(DRAFT)
+  reviewStatus        ReviewStatus       @default(DRAFT)
+  sourceBasis         String
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  equipment           Equipment          @relation(fields: [equipmentId], references: [id])
+  component           Component?         @relation(fields: [componentId], references: [id])
+  thicknessReadings   ThicknessReading[]
+
+  @@unique([tenantId, equipmentId, pointCode])
+  @@index([tenantId, equipmentId, componentId])
+}
+
+model ThicknessReading {
+  id                String            @id @default(uuid())
+  tenantId          String
+  cmlTmlPointId     String
+  readingDate       DateTime
+  thicknessValue    Decimal
+  unit              String
+  dataQualityStatus DataQualityStatus @default(PENDING_VALIDATION)
+  reviewStatus      ReviewStatus      @default(PENDING_VALIDATION)
+  sourceBasis       String
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  cmlTmlPoint       CmlTmlPoint       @relation(fields: [cmlTmlPointId], references: [id])
+
+  @@index([tenantId, cmlTmlPointId, readingDate])
+}
+
+model Document {
+  id                String               @id @default(uuid())
+  tenantId          String
+  projectId         String
+  siteId            String
+  documentCode      String
+  title             String
+  documentType      String
+  status            DocumentStatus       @default(DRAFT)
+  confidentiality   ConfidentialityLevel @default(RESTRICTED)
+  currentVersion    Int                  @default(1)
+  sourceBasis       String
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  tenant            Tenant               @relation(fields: [tenantId], references: [id])
+  project           Project              @relation(fields: [projectId], references: [id])
+  site              Site                 @relation(fields: [siteId], references: [id])
+  versions          DocumentVersion[]
+  links             DocumentLink[]
+
+  @@unique([tenantId, projectId, siteId, documentCode])
+  @@index([tenantId, projectId, siteId, status])
+}
+
+model DocumentVersion {
+  id             String         @id @default(uuid())
+  tenantId       String
+  documentId     String
+  versionNumber  Int
+  fileName       String
+  mimeType       String
+  objectKey      String
+  sizeBytes      Int
+  checksum       String?
+  status         DocumentStatus @default(DRAFT)
+  uploadedBy     String
+  uploadedAt     DateTime       @default(now())
+  document       Document       @relation(fields: [documentId], references: [id])
+
+  @@unique([tenantId, documentId, versionNumber])
+  @@index([tenantId, documentId])
+}
+
+model DocumentLink {
+  id               String   @id @default(uuid())
+  tenantId         String
+  documentId       String
+  linkedObjectType String
+  linkedObjectId   String
+  relationship     String
+  evidenceUse      String
+  sourceBasis      String
+  createdAt        DateTime @default(now())
+  document         Document @relation(fields: [documentId], references: [id])
+
+  @@index([tenantId, linkedObjectType, linkedObjectId])
+  @@index([tenantId, documentId])
+}
+
+model ImportBatch {
+  id             String       @id @default(uuid())
+  tenantId       String
+  projectId      String
+  siteId         String
+  importType     ImportType
+  sourceFileName String
+  status         ImportStatus @default(UPLOADED)
+  rowCount       Int          @default(0)
+  issueCount     Int          @default(0)
+  sourceBasis    String
+  createdBy      String
+  createdAt      DateTime     @default(now())
+  tenant         Tenant       @relation(fields: [tenantId], references: [id])
+  project        Project      @relation(fields: [projectId], references: [id])
+  site           Site         @relation(fields: [siteId], references: [id])
+  rows           ImportRow[]
+  issues         ValidationIssue[]
+
+  @@index([tenantId, projectId, siteId, status])
+}
+
+model ImportRow {
+  id                    String          @id @default(uuid())
+  tenantId              String
+  batchId               String
+  rowNumber             Int
+  rawPayload            Json
+  mappedPayload         Json?
+  status                ImportRowStatus @default(PENDING_VALIDATION)
+  duplicateCandidateKey String?
+  createdAt             DateTime        @default(now())
+  batch                 ImportBatch     @relation(fields: [batchId], references: [id])
+  issues                ValidationIssue[]
+
+  @@unique([tenantId, batchId, rowNumber])
+  @@index([tenantId, batchId, status])
+}
+
+model ValidationIssue {
+  id        String                @id @default(uuid())
+  tenantId  String
+  batchId   String
+  rowId     String
+  severity  ValidationSeverity
+  code      String
+  field     String
+  message   String
+  status    ValidationIssueStatus @default(OPEN)
+  createdAt DateTime              @default(now())
+  batch     ImportBatch           @relation(fields: [batchId], references: [id])
+  row       ImportRow             @relation(fields: [rowId], references: [id])
+
+  @@index([tenantId, batchId, status])
+  @@index([tenantId, rowId])
+}
+
+model ActionItem {
+  id                   String               @id @default(uuid())
+  tenantId             String
+  projectId            String
+  siteId               String
+  module               ActionModule
+  title                String
+  summary              String
+  priority             ActionPriority       @default(MEDIUM)
+  status               ActionStatus         @default(OPEN)
+  dueAt                DateTime?
+  ownerActorId         String?
+  ownerRole            GenericAuthority
+  requiredAuthority    GenericAuthority
+  linkedObjectType     String
+  linkedObjectId       String
+  preliminaryRiskLevel PreliminaryRiskLevel @default(NOT_ASSESSED)
+  missingEvidenceCount Int                  @default(0)
+  sourceBasis          String
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  tenant               Tenant               @relation(fields: [tenantId], references: [id])
+  project              Project              @relation(fields: [projectId], references: [id])
+  site                 Site                 @relation(fields: [siteId], references: [id])
+  approvalWorkflows    GenericApprovalWorkflow[]
+  transitions          WorkflowTransition[]
+  notificationItems    NotificationDigestItem[]
+
+  @@index([tenantId, projectId, siteId, status, priority])
+  @@index([tenantId, ownerRole, dueAt])
+  @@index([tenantId, linkedObjectType, linkedObjectId])
+}
+
+model GenericApprovalWorkflow {
+  id                  String                 @id @default(uuid())
+  tenantId            String
+  projectId           String
+  siteId              String
+  actionItemId        String
+  linkedObjectType    String
+  linkedObjectId      String
+  status              ApprovalWorkflowStatus @default(PENDING_REVIEW)
+  requiredAuthority   GenericAuthority
+  currentReviewerRole GenericAuthority
+  decisionBoundary    String                 @default("draft_preliminary_only")
+  sourceBasis         String
+  createdBy           String
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  tenant              Tenant                 @relation(fields: [tenantId], references: [id])
+  project             Project                @relation(fields: [projectId], references: [id])
+  site                Site                   @relation(fields: [siteId], references: [id])
+  actionItem          ActionItem             @relation(fields: [actionItemId], references: [id])
+  transitions         WorkflowTransition[]
+
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, currentReviewerRole])
+}
+
+model WorkflowTransition {
+  id           String                   @id @default(uuid())
+  tenantId     String
+  actionItemId String?
+  workflowId   String?
+  action       WorkflowTransitionAction
+  fromStatus   String
+  toStatus     String
+  actorId      String
+  actorRole    String
+  comment      String
+  sourceBasis  String
+  occurredAt   DateTime                 @default(now())
+  actionItem   ActionItem?              @relation(fields: [actionItemId], references: [id])
+  workflow     GenericApprovalWorkflow? @relation(fields: [workflowId], references: [id])
+
+  @@index([tenantId, actionItemId])
+  @@index([tenantId, workflowId])
+  @@index([tenantId, occurredAt])
+}
+
+model NotificationDigest {
+  id               String                   @id @default(uuid())
+  tenantId         String
+  projectId        String
+  siteId           String
+  digestType       NotificationDigestType
+  recipientRole    GenericAuthority
+  status           NotificationDigestStatus @default(DRAFT)
+  generatedAt      DateTime                 @default(now())
+  groupedItemCount Int                      @default(0)
+  dueItemCount     Int                      @default(0)
+  overdueItemCount Int                      @default(0)
+  escalationCount  Int                      @default(0)
+  sourceBasis      String
+  tenant           Tenant                   @relation(fields: [tenantId], references: [id])
+  project          Project                  @relation(fields: [projectId], references: [id])
+  site             Site                     @relation(fields: [siteId], references: [id])
+  items            NotificationDigestItem[]
+
+  @@index([tenantId, projectId, siteId, digestType])
+  @@index([tenantId, recipientRole, generatedAt])
+}
+
+model NotificationDigestItem {
+  id           String             @id @default(uuid())
+  tenantId     String
+  digestId     String
+  actionItemId String?
+  groupKey     String
+  severity     ValidationSeverity
+  reason       String
+  digest       NotificationDigest @relation(fields: [digestId], references: [id])
+  actionItem   ActionItem?        @relation(fields: [actionItemId], references: [id])
+
+  @@index([tenantId, digestId])
+  @@index([tenantId, actionItemId])
+}
+
+model ExportLog {
+  id               String               @id @default(uuid())
+  tenantId         String
+  projectId        String
+  siteId           String
+  exportType       ExportType
+  objectType       String
+  objectId         String
+  purpose          String
+  requestedBy      String
+  approvalStatus   ExportApprovalStatus @default(PENDING_REVIEW)
+  version          Int                  @default(1)
+  decisionBoundary String               @default("draft_preliminary_only")
+  sourceBasis      String
+  createdAt        DateTime             @default(now())
+  tenant           Tenant               @relation(fields: [tenantId], references: [id])
+  project          Project              @relation(fields: [projectId], references: [id])
+  site             Site                 @relation(fields: [siteId], references: [id])
+
+  @@index([tenantId, projectId, siteId, approvalStatus])
+  @@index([tenantId, objectType, objectId])
+}
+
+model InspectionDue {
+  id               String                   @id @default(uuid())
+  tenantId         String
+  projectId        String
+  siteId           String
+  assetId          String
+  equipmentTag     String
+  equipmentName    String
+  equipmentType    String
+  statutoryBasis   String
+  dueDate          DateTime
+  dueStatus        InspectionDueStatus      @default(NOT_DUE)
+  inspectionStatus InspectionTrackingStatus @default(PLANNED)
+  workpackId       String?
+  evidencePackId   String?
+  linkedActionId   String?
+  priority         ActionPriority           @default(MEDIUM)
+  dataQuality      DataQualityStatus        @default(DRAFT)
+  reviewStatus     ReviewStatus            @default(DRAFT)
+  sourceBasis      String
+  decisionBoundary String                   @default("draft_preliminary_only")
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @updatedAt
+
+  @@index([tenantId, projectId, siteId, dueStatus])
+  @@index([tenantId, equipmentTag])
+}
+
+model Workpack {
+  id                    String         @id @default(uuid())
+  tenantId              String
+  projectId             String
+  siteId                String
+  workpackCode          String
+  title                 String
+  inspectionDueId       String
+  assetId               String
+  equipmentTag          String
+  scopeSummary          String
+  scheduledStart        DateTime
+  scheduledEnd          DateTime
+  status                WorkpackStatus @default(DRAFT)
+  evidenceDocumentCodes Json
+  draftFindings         Json
+  reviewerRole          String
+  sourceBasis           String
+  decisionBoundary      String         @default("draft_preliminary_only")
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  steps                 WorkpackStep[]
+
+  @@unique([tenantId, siteId, workpackCode])
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, inspectionDueId])
+}
+
+model WorkpackStep {
+  id               String             @id @default(uuid())
+  tenantId         String
+  workpackId       String
+  label            String
+  ownerRole        String
+  status           WorkpackStepStatus @default(NOT_STARTED)
+  evidenceRequired Boolean            @default(false)
+  sourceBasis      String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  workpack         Workpack           @relation(fields: [workpackId], references: [id])
+
+  @@index([tenantId, workpackId, status])
+}
+
+model CertificationRegister {
+  id                     String                       @id @default(uuid())
+  tenantId               String
+  projectId              String
+  siteId                 String
+  certificateCode        String
+  certificateType        String
+  assetId                String
+  equipmentTag           String
+  equipmentName          String
+  expiryDate             DateTime
+  renewalDueDate         DateTime
+  certificationStatus    CertificationRegisterStatus  @default(ACTIVE)
+  readinessStatus        CertificationReadinessStatus @default(NOT_READY)
+  checklistId            String?
+  requiredEvidenceCount  Int                          @default(0)
+  availableEvidenceCount Int                          @default(0)
+  gapCount               Int                          @default(0)
+  submissionLogStatus    String                       @default("not_started")
+  evidencePackId         String?
+  linkedActionId         String?
+  sourceBasis            String
+  decisionBoundary       String                       @default("draft_preliminary_only")
+  createdAt              DateTime                     @default(now())
+  updatedAt              DateTime                     @updatedAt
+  checklistItems         CertificationChecklistItem[]
+  submissionLogs         CertificationSubmissionLog[]
+
+  @@unique([tenantId, siteId, certificateCode])
+  @@index([tenantId, projectId, siteId, certificationStatus])
+  @@index([tenantId, readinessStatus, renewalDueDate])
+}
+
+model CertificationChecklistItem {
+  id                      String                 @id @default(uuid())
+  tenantId                String
+  certificationRegisterId String
+  label                   String
+  required                Boolean                @default(true)
+  status                  EvidenceChecklistState @default(MISSING)
+  documentId              String?
+  documentCode            String?
+  sourceBasis             String
+  createdAt               DateTime               @default(now())
+  certificationRegister   CertificationRegister  @relation(fields: [certificationRegisterId], references: [id])
+
+  @@index([tenantId, certificationRegisterId, status])
+}
+
+model CertificationSubmissionLog {
+  id                      String                @id @default(uuid())
+  tenantId                String
+  certificationRegisterId String
+  status                  String                @default("draft")
+  submittedBy             String?
+  submittedAt             DateTime?
+  reviewerRole            String?
+  notes                   String?
+  sourceBasis             String
+  decisionBoundary        String                @default("draft_preliminary_only")
+  createdAt               DateTime              @default(now())
+  certificationRegister   CertificationRegister @relation(fields: [certificationRegisterId], references: [id])
+
+  @@index([tenantId, certificationRegisterId, status])
+}
+
+model EvidenceChecklist {
+  id               String                  @id @default(uuid())
+  tenantId         String
+  projectId        String
+  siteId           String
+  contextType      EvidenceContextType
+  contextId        String
+  title            String
+  status           EvidenceChecklistStatus @default(NOT_STARTED)
+  requiredCount    Int                     @default(0)
+  availableCount   Int                     @default(0)
+  gapCount         Int                     @default(0)
+  reviewerRole     String
+  sourceBasis      String
+  decisionBoundary String                  @default("draft_preliminary_only")
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  items            EvidenceChecklistItem[]
+
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, contextType, contextId])
+}
+
+model EvidenceChecklistItem {
+  id                  String                 @id @default(uuid())
+  tenantId            String
+  evidenceChecklistId String
+  label               String
+  required            Boolean                @default(true)
+  status              EvidenceChecklistState @default(MISSING)
+  documentId          String?
+  documentCode        String?
+  reuseAllowed        Boolean                @default(false)
+  notes               String?
+  sourceBasis         String
+  evidenceChecklist   EvidenceChecklist      @relation(fields: [evidenceChecklistId], references: [id])
+
+  @@index([tenantId, evidenceChecklistId, status])
+}
+
+model EvidencePack {
+  id                  String                    @id @default(uuid())
+  tenantId            String
+  projectId           String
+  siteId              String
+  packCode            String
+  contextType         EvidenceContextType
+  contextId           String
+  title               String
+  status              EvidencePackStatus        @default(DRAFT)
+  checklistId         String
+  completenessPercent Int                       @default(0)
+  requiredItemCount   Int                       @default(0)
+  availableItemCount  Int                       @default(0)
+  missingItemCount    Int                       @default(0)
+  reviewStatus        ReviewStatus              @default(DRAFT)
+  exportReadyStatus   EvidenceExportReadyStatus @default(NOT_READY)
+  sourceBasis         String
+  decisionBoundary    String                    @default("draft_preliminary_only")
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+  items               EvidencePackItem[]
+
+  @@unique([tenantId, siteId, packCode])
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, contextType, contextId])
+}
+
+model EvidencePackItem {
+  id             String       @id @default(uuid())
+  tenantId       String
+  evidencePackId String
+  documentId     String?
+  documentCode   String
+  reuseSource    String?
+  status         String       @default("linked_preliminary")
+  evidencePack   EvidencePack @relation(fields: [evidencePackId], references: [id])
+
+  @@index([tenantId, evidencePackId])
+}
+
+model BusinessKpiSnapshot {
+  id               String   @id @default(uuid())
+  tenantId         String
+  projectId        String
+  siteId           String
+  kpiCode          String
+  label            String
+  value            Int
+  severity         String
+  routeHint        String
+  sourceBasis      String
+  decisionBoundary String   @default("draft_preliminary_only")
+  capturedAt       DateTime @default(now())
+
+  @@index([tenantId, projectId, siteId, kpiCode])
+}
+
+model UserProfile {
+  id           String               @id @default(uuid())
+  tenantId     String
+  externalId   String?
+  email        String
+  displayName  String
+  status       UserStatus           @default(ACTIVE)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  tenant       Tenant               @relation(fields: [tenantId], references: [id])
+  assignments  UserRoleAssignment[]
+
+  @@unique([tenantId, email])
+  @@index([tenantId, status])
+}
+
+model Role {
+  id          String               @id @default(uuid())
+  tenantId    String
+  projectId   String?
+  code        String
+  name        String
+  description String
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  project     Project?             @relation(fields: [projectId], references: [id])
+  permissions RolePermission[]
+  assignments UserRoleAssignment[]
+
+  @@unique([tenantId, projectId, code])
+  @@index([tenantId, projectId])
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  code        String           @unique
+  description String
+  createdAt   DateTime         @default(now())
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
+
+model UserRoleAssignment {
+  id        String     @id @default(uuid())
+  userId    String
+  roleId    String
+  scope     ScopeLevel @default(TENANT)
+  tenantId  String
+  projectId String?
+  siteId    String?
+  createdAt DateTime   @default(now())
+  user      UserProfile @relation(fields: [userId], references: [id])
+  role      Role        @relation(fields: [roleId], references: [id])
+
+  @@index([tenantId, projectId, siteId])
+}
+
+model AuditLog {
+  id               String   @id @default(uuid())
+  tenantId         String
+  projectId        String?
+  siteId           String?
+  actorId          String
+  action           String
+  objectType       String
+  objectId         String
+  sourceBasis      String
+  decisionBoundary String   @default("draft_preliminary_only")
+  previousValue    Json?
+  newValue         Json?
+  occurredAt       DateTime @default(now())
+  tenant           Tenant   @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, projectId, siteId, occurredAt])
+  @@index([tenantId, objectType, objectId])
+}
+
+model SeedDatasetRecord {
+  id        String         @id @default(uuid())
+  seedCode  String         @unique
+  status    BaselineStatus @default(DRAFT_PRELIMINARY)
+  payload   Json
+  createdAt DateTime       @default(now())
+}
+
+enum TenantStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum BaselineStatus {
+  DRAFT_PRELIMINARY
+  PENDING_REVIEW
+  APPROVED_BASELINE
+  REJECTED
+}
+
+enum ScopeLevel {
+  TENANT
+  PROJECT
+  SITE
+}
+
+enum DataQualityStatus {
+  DRAFT
+  IMPORTED
+  PENDING_VALIDATION
+  DATA_GAP
+  VALIDATED
+  LIMITED_BASIS
+}
+
+enum ReviewStatus {
+  DRAFT
+  PENDING_VALIDATION
+  IN_REVIEW
+  APPROVED_BASELINE
+  REJECTED
+  NEEDS_REVISION
+}
+
+enum DocumentStatus {
+  DRAFT
+  CONTROLLED
+  APPROVED
+  SUPERSEDED
+  ARCHIVED
+  REJECTED
+}
+
+enum ConfidentialityLevel {
+  PUBLIC_INTERNAL
+  RESTRICTED
+  CONFIDENTIAL
+}
+
+enum ImportType {
+  ASSET_REGISTRY
+  DOCUMENT_METADATA
+}
+
+enum ImportStatus {
+  UPLOADED
+  MAPPED
+  VALIDATION_FAILED
+  PENDING_APPROVAL
+  BASELINE_APPROVED
+  REJECTED
+}
+
+enum ImportRowStatus {
+  PENDING_VALIDATION
+  VALID
+  DATA_GAP
+  DUPLICATE_CANDIDATE
+  REJECTED
+}
+
+enum ValidationSeverity {
+  INFO
+  WARNING
+  ERROR
+}
+
+enum ValidationIssueStatus {
+  OPEN
+  ACCEPTED_WITH_LIMITATION
+  RESOLVED
+  REJECTED
+}
+
+enum ActionModule {
+  DATA_FOUNDATION
+  DOCUMENT_CONTROL
+  VALIDATION
+  GOVERNANCE
+  INSPECTION
+  CERTIFICATION
+  EVIDENCE
+}
+
+enum ActionPriority {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum ActionStatus {
+  OPEN
+  IN_PROGRESS
+  PENDING_REVIEW
+  REVISION_REQUESTED
+  APPROVED_FOR_NEXT_STEP
+  REJECTED
+  DELEGATED
+  ESCALATED
+  CLOSED
+}
+
+enum PreliminaryRiskLevel {
+  NOT_ASSESSED
+  PRELIMINARY_LOW
+  PRELIMINARY_MEDIUM
+  PRELIMINARY_HIGH
+}
+
+enum GenericAuthority {
+  DOCUMENT_CONTROLLER
+  QC_REVIEWER
+  LEGAL_REVIEWER
+  MANAGEMENT_REVIEWER
+  PLATFORM_ADMINISTRATOR
+}
+
+enum ApprovalWorkflowStatus {
+  PENDING_REVIEW
+  REVISION_REQUESTED
+  APPROVED_FOR_NEXT_STEP
+  REJECTED
+  DELEGATED
+  ESCALATED
+}
+
+enum WorkflowTransitionAction {
+  APPROVE
+  REJECT
+  REQUEST_REVISION
+  DELEGATE
+  ESCALATE
+}
+
+enum NotificationDigestType {
+  DAILY_ACTION_DIGEST
+  REVIEW_DIGEST
+  ESCALATION_DIGEST
+}
+
+enum NotificationDigestStatus {
+  DRAFT
+  READY
+}
+
+enum ExportType {
+  REPORT
+  EVIDENCE_PACK_PLACEHOLDER
+  DATA_EXTRACT
+}
+
+enum ExportApprovalStatus {
+  NOT_REQUIRED
+  PENDING_REVIEW
+  APPROVED_FOR_EXPORT
+  REJECTED
+}
+
+enum InspectionDueStatus {
+  OVERDUE
+  DUE_SOON
+  SCHEDULED
+  COMPLETED
+  NOT_DUE
+}
+
+enum InspectionTrackingStatus {
+  PLANNED
+  SCHEDULED
+  IN_PROGRESS
+  PENDING_REVIEW
+  COMPLETED_PRELIMINARY
+  DEFERRED_NEEDS_REVIEW
+}
+
+enum WorkpackStatus {
+  DRAFT
+  SCHEDULED
+  FIELD_EXECUTION
+  PENDING_REVIEW
+  CLOSED_PRELIMINARY
+}
+
+enum WorkpackStepStatus {
+  NOT_STARTED
+  READY
+  IN_PROGRESS
+  PENDING_REVIEW
+  COMPLETE_PRELIMINARY
+}
+
+enum CertificationRegisterStatus {
+  ACTIVE
+  DUE_SOON
+  EXPIRED
+  PENDING_SUBMISSION
+  SUBMITTED
+  EVIDENCE_GAP
+  UNDER_REVIEW
+}
+
+enum CertificationReadinessStatus {
+  NOT_READY
+  DATA_GAP
+  EVIDENCE_PENDING
+  READY_FOR_REVIEW
+  SUBMITTED
+  REVIEWED_PRELIMINARY
+}
+
+enum EvidenceContextType {
+  ASSET
+  INSPECTION
+  CERTIFICATION
+  WORKPACK
+  RISK
+  ANOMALY
+  RECOMMENDATION
+  COMPLIANCE_EXPORT
+}
+
+enum EvidenceChecklistStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETE_PENDING_REVIEW
+  GAP_FOUND
+  REVIEWED_PRELIMINARY
+}
+
+enum EvidenceChecklistState {
+  AVAILABLE
+  MISSING
+  NEEDS_REVIEW
+}
+
+enum EvidencePackStatus {
+  DRAFT
+  COMPLETENESS_CHECK
+  READY_FOR_REVIEW
+  REVISION_REQUESTED
+  EXPORT_LOGGED_PRELIMINARY
+}
+
+enum EvidenceExportReadyStatus {
+  NOT_READY
+  READY_FOR_REVIEW
+  EXPORT_LOGGED_PRELIMINARY
+}

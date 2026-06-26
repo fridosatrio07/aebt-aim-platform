@@ -1,0 +1,30 @@
+{
+  "seedCode": "release_2_work_queue_operational_flow_demo",
+  "status": "draft_preliminary_only",
+  "purpose": "Demo-only Release 2 action/work queue, generic approval workflow, notification digest, dashboard-to-action, and export log data. No final technical, certification, legal, RBI, RLA, FFS, fit-for-operation, layak operasi, risk acceptance, or asset safety decision is represented.",
+  "tenantId": "tenant-spm-01",
+  "projectId": "project-spm-01",
+  "siteId": "site-spm-01",
+  "sourceBasis": "Master BPMN Workflow Pack/Addendum MVP+/UI UX Design Pack/Master FRD SRS Rev. 1",
+  "contents": {
+    "workflow": [
+      "action_item",
+      "generic_approval_workflow",
+      "workflow_transition"
+    ],
+    "notification": [
+      "notification_digest",
+      "notification_digest_item"
+    ],
+    "reporting": [
+      "dashboard_action_card",
+      "export_log"
+    ]
+  },
+  "guardrails": [
+    "Approvals are generic workflow state transitions only.",
+    "Dashboard cards route to filtered action lists.",
+    "Notifications are grouped digests to avoid alert fatigue.",
+    "Export logging records purpose, timestamp, user, scope, version, and approval status only."
+  ]
+}
