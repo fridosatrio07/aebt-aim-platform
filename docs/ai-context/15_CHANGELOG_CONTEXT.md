@@ -57,5 +57,15 @@
 - Ran and passed `pnpm run release3:verify`.
 - Marked Release 3 task packets, Release 3 README, Release 3 task index entries, and Release 3 release-plan task list complete.
 - No database migrations were run.
-- No Release 4 RBI/risk/anomaly modules, final inspection/certification decisions, interval extension logic, or unsupported final-decision logic were implemented.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
+
+## 2026-06-26 - Release 4 Implementation
+
+- Implemented Release 4 Integrity/RBI Controlled Skeletons under `main/`.
+- Added RBI candidate routing schema & UI, RBI assessment shell with stepper UI, operating data input, damage mechanism review placeholder, PoF/CoF helper interface, preliminary risk ranking record, RBI review & approval workflow, risk register linkage, Release 4 shared integrity guardrails, and R4 verification script.
+- Registered IntegrityFoundationModule in the NestJS API and added AppShell navigation surfaces (RBI Candidates, RBI Assessment, Risk Register, Integrity Dashboard).
+- Updated `main/package.json` version to `0.0.0-release-4` with `release4:verify` script entry.
+- Ran and passed `pnpm run release4:verify`.
+- Marked Release 4 task packets (R4-01 through R4-10), Release 4 README, and Release 4 release-plan task list complete.
+- No database migrations were run.
 - No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.

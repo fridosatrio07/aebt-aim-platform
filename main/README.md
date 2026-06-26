@@ -1,13 +1,13 @@
 # AIM Platform Main Application
 
-Release 3 adds first operational business modules on top of the platform, data, document, work queue, and reviewer flow foundations. It supports inspection due tracking, workpack skeletons, certification support register, evidence checklist, evidence pack preview, and dashboard KPI wiring. It does not implement final business decisions, RBI calculations, certification decisions, RLA/FFS decisions, fit-for-operation decisions, legal interpretations, or inspection interval extension logic.
+Release 4 adds RBI and integrity workflow controlled skeletons on top of the platform, data, document, work queue, reviewer flow, and first business modules foundations. It supports RBI candidate routing, RBI assessment shell with stepper UI, operating data input, damage mechanism review placeholder, PoF/CoF helper interface, preliminary risk ranking record, RBI review & approval workflow, and risk register linkage. It does not implement final technical decisions, automatic PoF/CoF formulas not source-approved, final RBI/RLA/FFS decisions, risk acceptance criteria changes, or interval extension approval.
 
 ## Workspace Layout
 
-- `apps/web`: Next.js + TypeScript Release 3 business workbench.
+- `apps/web`: Next.js + TypeScript Release 4 integrity/RBI workbench.
 - `apps/api`: NestJS modular monolith API.
-- `packages/shared`: shared API, tenant, RBAC, audit, guardrail, seed, Release 1 data, Release 2 workflow, and Release 3 business primitives.
-- `packages/database`: Prisma/PostgreSQL/TimescaleDB Release 3 foundation schema.
+- `packages/shared`: shared API, tenant, RBAC, audit, guardrail, seed, Release 1–3 primitives, and Release 4 integrity/RBI guardrails.
+- `packages/database`: Prisma/PostgreSQL/TimescaleDB Release 4 schema.
 - `services/analytics`: FastAPI analytics/extraction placeholder.
 - `infra`: Docker-first local infrastructure baseline.
 - `scripts`: release quality gates and safety checks.
@@ -20,7 +20,7 @@ pnpm run typecheck
 pnpm run test
 pnpm run build
 pnpm run migration:check
-pnpm run release3:verify
+pnpm run release4:verify
 ```
 
 Python analytics syntax check:
