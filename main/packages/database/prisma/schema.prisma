@@ -7,11 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Release 3 foundation schema.
+// Release 4 foundation schema.
 // R1 adds controlled asset, document, import staging, and validation foundations.
 // R2 adds generic action/work queue, generic approval transition, notification digest, and export log foundations.
-// R3 adds inspection due tracking, workpack skeletons, certification support register, evidence checklist/pack preview, and business KPI snapshots.
-// Do not add RBI/risk, anomaly workflow, final technical decision, or interval extension tables until later approved tasks are active.
+// R3 adds inspection due tracking, workpack skeletons, certification support register, evidence checklist/pack preview, and business KPI snapshots.`r`n// R4 adds controlled RBI candidate, assessment, operating data, damage mechanism placeholder, PoF/CoF helper, preliminary risk ranking, and risk register skeletons.`r`n// Do not add anomaly workflow, final technical decision, final RBI/RLA/FFS approval, risk acceptance change, or interval extension tables until later approved tasks are active.
 
 model Tenant {
   id        String       @id @default(uuid())
@@ -735,6 +734,171 @@ model BusinessKpiSnapshot {
   @@index([tenantId, projectId, siteId, kpiCode])
 }
 
+model RbiCandidate {
+  id                    String             @id @default(uuid())
+  tenantId              String
+  projectId             String
+  siteId                String
+  assetId               String
+  equipmentTag          String
+  equipmentName         String
+  equipmentType         String
+  scopingBasis          RbiScopingBasis
+  scopingNotes          String
+  status                RbiCandidateStatus @default(NOT_SCOPED)
+  assignedEngineerRole  String
+  assessmentId          String?
+  linkedActionId        String?
+  priority              ActionPriority     @default(MEDIUM)
+  dataQualityStatus     DataQualityStatus  @default(DRAFT)
+  reviewStatus          ReviewStatus       @default(DRAFT)
+  nextAction            String
+  sourceBasis           String
+  decisionBoundary      String             @default("draft_preliminary_only")
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, equipmentTag])
+}
+
+model RbiAssessment {
+  id                       String               @id @default(uuid())
+  tenantId                 String
+  projectId                String
+  siteId                   String
+  candidateId              String
+  assetId                  String
+  equipmentTag             String
+  assessmentCode           String
+  title                    String
+  status                   RbiAssessmentStatus  @default(DRAFT)
+  methodologyStatus        RbiMethodologyStatus @default(TBD_SME_APPROVAL)
+  methodologyNotes         String
+  operatingDataStatus      String               @default("not_started")
+  damageMechanismStatus    String               @default("not_started")
+  pofCofStatus             String               @default("not_started")
+  riskRankingStatus        String               @default("not_started")
+  evidencePackId           String?
+  linkedActionId           String?
+  reviewerRole             String
+  sourceBasis              String
+  decisionBoundary         String               @default("draft_preliminary_only")
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+  operatingData            RbiOperatingData[]
+  damageMechanisms         RbiDamageMechanism[]
+  pofCofHelpers            RbiPofCofHelper[]
+  riskRankings             RbiRiskRanking[]
+  riskRegisterItems        RbiRiskRegisterItem[]
+
+  @@unique([tenantId, siteId, assessmentCode])
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, candidateId])
+}
+
+model RbiOperatingData {
+  id                   String                 @id @default(uuid())
+  tenantId             String
+  assessmentId         String
+  assetId              String
+  parameterName        String
+  parameterValue       String
+  unit                 String
+  dataSource           String
+  dataQualityStatus    DataQualityStatus      @default(DRAFT)
+  reviewStatus         ReviewStatus           @default(DRAFT)
+  sourceBasis          String
+  decisionBoundary     String                 @default("draft_preliminary_only")
+  assessment           RbiAssessment          @relation(fields: [assessmentId], references: [id])
+
+  @@index([tenantId, assessmentId])
+}
+
+model RbiDamageMechanism {
+  id               String                  @id @default(uuid())
+  tenantId         String
+  assessmentId     String
+  assetId          String
+  mechanismName    String
+  category         DamageMechanismCategory
+  susceptible      String                  @default("tbd_sme")
+  notes            String
+  status           DamageMechanismStatus   @default(PLACEHOLDER_SME_INPUT)
+  sourceBasis      String
+  decisionBoundary String                  @default("draft_preliminary_only")
+  assessment       RbiAssessment           @relation(fields: [assessmentId], references: [id])
+
+  @@index([tenantId, assessmentId, status])
+}
+
+model RbiPofCofHelper {
+  id                 String             @id @default(uuid())
+  tenantId           String
+  assessmentId       String
+  assetId            String
+  pofInputSummary    String
+  pofResult          PofCofLevel        @default(TBD_SME)
+  pofMethodologyRef  String
+  cofInputSummary    String
+  cofResult          PofCofLevel        @default(TBD_SME)
+  cofMethodologyRef  String
+  helperNotes        String
+  status             PofCofHelperStatus @default(DRAFT_HELPER)
+  sourceBasis        String
+  decisionBoundary   String             @default("draft_preliminary_only")
+  assessment         RbiAssessment      @relation(fields: [assessmentId], references: [id])
+
+  @@index([tenantId, assessmentId, status])
+}
+
+model RbiRiskRanking {
+  id                String            @id @default(uuid())
+  tenantId          String
+  assessmentId      String
+  assetId           String
+  pofLevel          PofCofLevel       @default(TBD_SME)
+  cofLevel          PofCofLevel       @default(TBD_SME)
+  overallRiskLevel  RbiRiskLevel      @default(TBD_SME)
+  riskRankingNotes  String
+  status            RiskRankingStatus @default(DRAFT_RANKING)
+  reviewerRole      String
+  reviewNotes       String?
+  sourceBasis       String
+  decisionBoundary  String            @default("draft_preliminary_only")
+  assessment        RbiAssessment     @relation(fields: [assessmentId], references: [id])
+
+  @@index([tenantId, assessmentId, status])
+}
+
+model RbiRiskRegisterItem {
+  id                String                 @id @default(uuid())
+  tenantId          String
+  projectId         String
+  siteId            String
+  assessmentId      String
+  assetId           String
+  equipmentTag      String
+  riskTitle         String
+  riskDescription   String
+  category          RiskRegisterCategory
+  pofLevel          PofCofLevel            @default(TBD_SME)
+  cofLevel          PofCofLevel            @default(TBD_SME)
+  overallRiskLevel  RbiRiskLevel           @default(TBD_SME)
+  status            RiskRegisterItemStatus @default(IDENTIFIED)
+  linkedActionId    String?
+  evidencePackId    String?
+  mitigationSummary String
+  actionOwnerRole   String
+  dueDate           DateTime
+  sourceBasis       String
+  decisionBoundary  String                 @default("draft_preliminary_only")
+  assessment        RbiAssessment          @relation(fields: [assessmentId], references: [id])
+
+  @@index([tenantId, projectId, siteId, status])
+  @@index([tenantId, assessmentId])
+}
+
 model UserProfile {
   id           String               @id @default(uuid())
   tenantId     String
@@ -1093,4 +1257,97 @@ enum EvidenceExportReadyStatus {
   NOT_READY
   READY_FOR_REVIEW
   EXPORT_LOGGED_PRELIMINARY
+}
+
+enum RbiCandidateStatus {
+  NOT_SCOPED
+  SCOPED_FOR_RBI
+  ASSESSMENT_IN_PROGRESS
+  ASSESSMENT_DRAFT
+  PENDING_REVIEW
+  REVIEWED_PRELIMINARY
+}
+
+enum RbiScopingBasis {
+  STATUTORY
+  CRITICALITY
+  CLIENT_REQUEST
+  RISK_INDICATOR
+  SME_RECOMMENDATION
+}
+
+enum RbiAssessmentStatus {
+  DRAFT
+  DATA_GATHERING
+  OPERATING_DATA_INPUT
+  DAMAGE_MECHANISM_REVIEW
+  POF_COF_HELPER
+  RISK_RANKING
+  PENDING_REVIEW
+  REVIEWED_PRELIMINARY
+  APPROVED_PRELIMINARY
+}
+
+enum RbiMethodologyStatus {
+  TBD_SME_APPROVAL
+  DRAFT_METHODOLOGY
+  UNDER_REVIEW
+  APPROVED_BASELINE
+}
+
+enum DamageMechanismCategory {
+  THINNING
+  CRACKING
+  ENVIRONMENTAL
+  MECHANICAL
+  OTHER_TBD_SME
+}
+
+enum DamageMechanismStatus {
+  PLACEHOLDER_SME_INPUT
+  SME_REVIEWED_PRELIMINARY
+}
+
+enum PofCofHelperStatus {
+  DRAFT_HELPER
+  REVIEWED_PRELIMINARY
+}
+
+enum PofCofLevel {
+  LOW
+  MEDIUM
+  HIGH
+  TBD_SME
+}
+
+enum RbiRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+  TBD_SME
+}
+
+enum RiskRankingStatus {
+  DRAFT_RANKING
+  PENDING_REVIEW
+  REVIEWED_PRELIMINARY
+  APPROVED_PRELIMINARY
+}
+
+enum RiskRegisterItemStatus {
+  IDENTIFIED
+  ASSESSED_PRELIMINARY
+  MITIGATION_PLANNED
+  MITIGATION_IN_PROGRESS
+  CLOSED_PRELIMINARY
+}
+
+enum RiskRegisterCategory {
+  TECHNICAL
+  SAFETY
+  ENVIRONMENTAL
+  COMPLIANCE
+  OPERATIONAL
+  REPUTATION
 }

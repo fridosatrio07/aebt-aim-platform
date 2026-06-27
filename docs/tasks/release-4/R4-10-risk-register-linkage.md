@@ -1,4 +1,4 @@
-# R4-10 — Risk Register Linkage
+# R4-10 - Risk Register Linkage
 
 ## Status
 

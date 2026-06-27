@@ -32,8 +32,12 @@ Release 4 implements the Integrity/RBI Controlled Skeleton for the AIM Platform.
 - `packages/shared/src/index.ts` - Added release-4 export
 - `packages/shared/src/rbac.ts` - Added RBI permissions (rbi.candidate.read/manage, rbi.assessment.read/manage/approve, rbi.operatingdata.read, rbi.damagemechanism.read, rbi.pofcof.read, rbi.riskranking.read, rbi.riskregister.read)
 - `apps/api/src/app.module.ts` - Registered IntegrityFoundationModule
-- `apps/web/src/components/AppShell.tsx` - Added RBI Candidates, RBI Assessment, Risk Register, Integrity Dashboard navigation items
+- `apps/web/src/components/AppShell.tsx` - Added visible R4 workbench panels for RBI Candidates, RBI Assessment, Operating Data, Damage Mechanism, PoF/CoF Helper, Preliminary Risk Ranking, Risk Register, and Integrity Dashboard
 - `package.json` - Updated version to release-4, added release4:verify script
+- `packages/database/prisma/schema.prisma` - Added Release 4 logical RBI/risk schema models/enums
+- `scripts/migration-check.mjs` - Promoted schema validation from Release 3 to Release 4
+- `seed/release-4-integrity-foundation.json` - Added Release 4 seed manifest
+- `tsconfig.base.json` and `apps/api/tsconfig.json` - Fixed typecheck configuration
 
 ## Key Architecture Decisions
 
@@ -68,17 +72,18 @@ All endpoints are under `/integrity`:
 3. PoF/CoF formulas are not implemented - only helper interface placeholders.
 4. Damage mechanism rules are not encoded - SME input is required.
 5. Risk acceptance criteria remain open for SME/Project Owner review.
-6. Browser visual QA was not run in this turn.
+6. Browser visual QA remains optional; production build and static verification passed.
 
 ## Tests Run
 
+- `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, `pnpm run migration:check`, `pnpm run analytics:check`, and `pnpm run release4:verify` passed on 2026-06-27.
 - Release 4 shared tests cover: candidate listing, tenant isolation, candidate detail, assessment listing, operating data, damage mechanisms, PoF/CoF helper, risk ranking, submit for review, approve (preliminary), reject, risk register linkage.
 - See `packages/shared/tests/release-4.test.ts` for full test suite.
 
 ## Known Limitations
 
 1. No persistent database - uses static in-memory demo data.
-2. No Prisma schema updates for Release 4 entities (follows R0-R3 pattern).
+2. Logical Prisma schema models/enums exist for Release 4 entities, but no database migrations were run.
 3. Methodology formula details remain TBD until SME-approved (OD-006).
 4. Risk acceptance criteria changes are out of scope.
 5. Interval extension approval is out of scope.
@@ -98,3 +103,4 @@ All endpoints are under `/integrity`:
 - When will SME-approved RBI methodology baseline be available?
 - Should risk register items be auto-created or manually linked?
 - What is the final risk acceptance criteria matrix?
+

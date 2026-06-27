@@ -1,4 +1,4 @@
-# R4-03 — RBI Assessment Shell
+# R4-03 - RBI Assessment Shell
 
 ## Status
 

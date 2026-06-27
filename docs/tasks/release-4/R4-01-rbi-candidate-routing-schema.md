@@ -1,4 +1,4 @@
-# R4-01 ? RBI Candidate Routing Schema
+# R4-01 - RBI Candidate Routing Schema
 
 ## Status
 
@@ -123,3 +123,4 @@ Create schema for identifying RBI candidates based on approved scoping flags and
 * Known limitations: Methodology formula details remain TBD until SME-approved.
 * Follow-up tasks: Final migration execution, physical schema.
 * Open questions: When will SME-approved RBI methodology baseline be available?
+

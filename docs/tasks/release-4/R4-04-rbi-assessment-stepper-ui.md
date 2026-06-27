@@ -1,4 +1,4 @@
-# R4-04 — RBI Assessment Stepper UI
+# R4-04 - RBI Assessment Stepper UI
 
 ## Status
 

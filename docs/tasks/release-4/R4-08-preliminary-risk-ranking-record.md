@@ -1,4 +1,4 @@
-# R4-08 — Preliminary Risk Ranking Record
+# R4-08 - Preliminary Risk Ranking Record
 
 ## Status
 

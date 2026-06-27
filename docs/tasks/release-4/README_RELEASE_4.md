@@ -38,16 +38,16 @@ Create controlled RBI and integrity workflow skeletons without final technical d
 
 ## Release Task List
 
-- [x] R4-01 — RBI Candidate Routing Schema
-- [x] R4-02 — RBI Candidate UI
-- [x] R4-03 — RBI Assessment Shell
-- [x] R4-04 — RBI Assessment Stepper UI
-- [x] R4-05 — Operating Data Input
-- [x] R4-06 — Damage Mechanism Review Placeholder
-- [x] R4-07 — PoF CoF Helper Interface
-- [x] R4-08 — Preliminary Risk Ranking Record
-- [x] R4-09 — RBI Review and Approval
-- [x] R4-10 — Risk Register Linkage
+- [x] R4-01 - RBI Candidate Routing Schema
+- [x] R4-02 - RBI Candidate UI
+- [x] R4-03 - RBI Assessment Shell
+- [x] R4-04 - RBI Assessment Stepper UI
+- [x] R4-05 - Operating Data Input
+- [x] R4-06 - Damage Mechanism Review Placeholder
+- [x] R4-07 - PoF CoF Helper Interface
+- [x] R4-08 - Preliminary Risk Ranking Record
+- [x] R4-09 - RBI Review and Approval
+- [x] R4-10 - Risk Register Linkage
 
 ## Required Context Files to Read Before Starting Any Task
 
@@ -76,3 +76,4 @@ Create controlled RBI and integrity workflow skeletons without final technical d
 - [x] Handoff notes are filled for every task.
 - [x] No out-of-scope implementation was added.
 - [x] Open decisions were updated.
+

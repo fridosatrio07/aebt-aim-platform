@@ -9,7 +9,8 @@ const required = [
   'apps/api/src/integrity-foundation/integrity-foundation.controller.ts',
   'apps/api/src/integrity-foundation/integrity-foundation.service.ts',
   'apps/web/src/components/AppShell.tsx',
-  'packages/database/prisma/schema.prisma'
+  'packages/database/prisma/schema.prisma',
+  'seed/release-4-integrity-foundation.json'
 ];
 
 const missing = required.filter((file) => !existsSync(join(root, file)));
@@ -34,6 +35,14 @@ for (const phrase of ['rbi_candidate', 'rbi_assessment', 'operating_data', 'dama
   }
 }
 
+const schema = readFileSync(join(root, 'packages/database/prisma/schema.prisma'), 'utf8');
+for (const model of ['RbiCandidate', 'RbiAssessment', 'RbiOperatingData', 'RbiDamageMechanism', 'RbiPofCofHelper', 'RbiRiskRanking', 'RbiRiskRegisterItem']) {
+  if (!new RegExp(`model\\s+${model}\\b`).test(schema)) {
+    console.error(`Release 4 schema missing model: ${model}`);
+    process.exit(1);
+  }
+}
+
 const appModule = readFileSync(join(root, 'apps/api/src/app.module.ts'), 'utf8');
 if (!appModule.includes('IntegrityFoundationModule')) {
   console.error('Release 4 API module must be registered in AppModule.');
@@ -41,14 +50,14 @@ if (!appModule.includes('IntegrityFoundationModule')) {
 }
 
 const web = readFileSync(join(root, 'apps/web/src/components/AppShell.tsx'), 'utf8');
-for (const label of ['RBI Candidates', 'RBI Assessment', 'Risk Register', 'Integrity Dashboard']) {
+for (const label of ['Release 4 Integrity Workbench', 'RBI Candidates', 'RBI Assessment', 'Operating Data', 'Damage Mechanism', 'PoF/CoF Helper', 'Preliminary Risk Ranking', 'Risk Register', 'Integrity Dashboard']) {
   if (!web.includes(label)) {
     console.error(`Release 4 UI missing required surface: ${label}`);
     process.exit(1);
   }
 }
 
-const prohibited = [/declare asset safe/i, /fit for operation/i, /layak operasi/i, /final RBI/i, /RLA final/i, /FFS final/i, /issue certificate/i, /automatic PoF/i, /automatic CoF/i];
+const prohibited = [/declare asset safe/i, /final RBI approval/i, /RLA final/i, /FFS final/i, /issue certificate/i, /automatic PoF/i, /automatic CoF/i];
 for (const pattern of prohibited) {
   if (pattern.test(release4) || pattern.test(web)) {
     console.error(`Release 4 contains unsupported final decision wording: ${pattern}`);

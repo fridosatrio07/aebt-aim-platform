@@ -18,7 +18,7 @@ export class FoundationService {
   private readonly auditSink = new InMemoryAuditSink();
 
   getHealth() {
-    return ok({ status: 'ok', release: '3', decisionBoundary: decisionBoundaryNotice }, { requestId: 'healthz' });
+    return ok({ status: 'ok', release: '4', decisionBoundary: decisionBoundaryNotice }, { requestId: 'healthz' });
   }
 
   getContext(scope: TenantScope) {
@@ -44,4 +44,5 @@ export class FoundationService {
     return { ...release0PlatformAdmin, scope: { ...defaultTenantScope, ...scope } };
   }
 }
+
 

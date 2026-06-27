@@ -1,0 +1,20 @@
+{
+  "seedCode": "release-4-integrity-foundation",
+  "status": "draft_preliminary_only",
+  "scope": {
+    "tenantId": "tenant-spm-01",
+    "projectId": "project-spm-01",
+    "siteId": "site-spm-01"
+  },
+  "modules": [
+    "rbi_candidate_routing",
+    "rbi_assessment_shell",
+    "operating_data_input",
+    "damage_mechanism_placeholder",
+    "pof_cof_helper_interface",
+    "preliminary_risk_ranking",
+    "risk_register_linkage"
+  ],
+  "guardrail": "Release 4 data is demo support data only. It does not make final RBI, RLA, FFS, inspection interval, risk acceptance, legal, certification, fit-for-operation, layak operasi, or asset safety decisions.",
+  "sourceBasis": "Master FRD SRS/Master BPMN Workflow Pack/Data Model Pack/Addendum MVP+ Rev. 1"
+}

@@ -1,4 +1,4 @@
-# R4-09 — RBI Review and Approval
+# R4-09 - RBI Review and Approval
 
 ## Status
 

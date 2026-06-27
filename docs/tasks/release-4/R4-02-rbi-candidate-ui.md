@@ -1,4 +1,4 @@
-# R4-02 ? RBI Candidate UI
+# R4-02 - RBI Candidate UI
 
 ## Status
 
@@ -123,3 +123,4 @@ Create RBI candidate UI for filtering, bulk assignment to RBI scope, and review 
 * Known limitations: Static demo data only.
 * Follow-up tasks: Integrate with real API when available.
 * Open questions: None.
+

@@ -69,3 +69,25 @@
 - Marked Release 4 task packets (R4-01 through R4-10), Release 4 README, and Release 4 release-plan task list complete.
 - No database migrations were run.
 - No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
+
+## 2026-06-27 - Release 4 Verification Hardening
+
+- Verified and hardened Release 4 after inspection found stale build/schema/docs controls.
+- Fixed TypeScript configuration so `pnpm run typecheck` passes across shared, database, API, and web packages.
+- Added Release 4 logical Prisma schema models/enums and promoted `migration:check` from Release 3 to Release 4 validation.
+- Added `seed/release-4-integrity-foundation.json` and tightened `verify-release-4.mjs` to require R4 schema, seed, and visible UI surfaces.
+- Updated the web workbench title and visible R4 panels for RBI Candidates, RBI Assessment, Operating Data, Damage Mechanism, PoF/CoF Helper, Preliminary Risk Ranking, Risk Register, and Integrity Dashboard.
+- Ran and passed `pnpm run release4:verify` after separate lint/typecheck/test/build/migration/analytics checks passed.
+- Updated Release 4 master task index and handoff/checklist notes to match the verified state.
+- No database migrations were run and no unsupported final RBI/RLA/FFS/safety/legal/certification/interval/risk-acceptance decision logic was introduced.
+
+## 2026-06-27 - Release 5 Planning Documentation
+
+- Release 5 planning documentation created.
+- No application source code modified by this documentation-planning task.
+- No Release 5 implementation started.
+- No database migration run.
+- No package files changed.
+- No new dependency added.
+- Release 5 tasks remain unchecked.
+- Open decisions remain subject to Project Owner, UBT/IT, Legal, Q&C, engineer, inspector, and SME review.

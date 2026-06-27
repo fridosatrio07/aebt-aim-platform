@@ -310,5 +310,6 @@ Skipping R4 risks implementing RBI screens or calculations without proper review
 
 ### Release 4 Completion Note
 
-Release 4 implementation was completed on 2026-06-26 under `main/`. Full verification should pass with `pnpm run release4:verify`. No database migrations, unsupported RBI formulas, final technical decisions, or interval extension logic were implemented. RBI methodology baseline remains TBD SME approval (OD-006/OD-018).
+Release 4 implementation was verified and hardened on 2026-06-27 under `main/`. Full verification passed with `pnpm run release4:verify`. Logical Prisma schema models/enums, shared in-memory data, API, and UI surfaces exist for controlled RBI/integrity skeletons. No database migrations, unsupported RBI formulas, final technical decisions, risk acceptance changes, or interval extension logic were implemented. RBI methodology baseline remains TBD SME approval (OD-006/OD-018).
+
 

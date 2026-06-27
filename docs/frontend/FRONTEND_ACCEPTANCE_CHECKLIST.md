@@ -1,0 +1,46 @@
+# Front-End Acceptance Checklist
+
+## Visual And UX Readiness
+
+- [x] App shell is consistent across the Release 5 workbench sections.
+- [x] Route accessibility basics are supported through keyboard-focusable navigation buttons and table action buttons.
+- [x] Navigation is consistent with role, tenant, project, and site context.
+- [x] Breadcrumb/current-page context is shown through the page header and active workbench section.
+- [x] Role-aware menu behavior is labelled as Needs RBAC Review where final permission is not approved.
+- [x] Existing Tailwind design tokens are used for core shell, line, field, action, and ink colors.
+- [x] Hard-coded colors are limited to status/warning states where no finalized token exists; final token governance remains a design review item.
+- [x] Table density and readability support high-volume scanning.
+- [x] Status badge behavior is consistent.
+- [x] Risk badge behavior is consistent and preliminary where applicable.
+- [x] Evidence badge behavior is consistent.
+- [x] Data quality badge behavior is consistent.
+- [x] Draft/preliminary labels are visible on technical output pages.
+- [x] Empty/loading/error/access denied states exist in the state matrix section.
+- [x] Drawer behavior is implemented through a local detail drawer that does not lose list context.
+- [x] Dashboard-to-action behavior opens filtered local detail context and stays labelled API-ready/mock.
+- [x] Saved view/filter behavior is visible through reusable filter chips and remains API-ready/mock.
+- [x] Mock data is consistent across pages and sourced from shared R1-R4 foundations.
+- [x] No misleading final decision language is present in the implemented UI.
+- [x] No unsupported domain/compliance/RBI/legal/certification logic is introduced.
+- [x] Export actions show warning, approval state, and export-log implications.
+- [x] Reviewer queue actions show authority and review boundary.
+- [x] Access denied state does not leak hidden object data.
+- [x] Helpdesk/support route planning exists for access/error/manual review paths.
+
+## Front-End Build/Check Commands Run From `main/`
+
+- [x] pnpm run lint
+- [x] pnpm run typecheck
+- [x] pnpm run test
+- [x] pnpm run build
+- [x] pnpm run migration:check
+- [x] pnpm run analytics:check
+- [x] pnpm run release4:verify
+- [x] node scripts/verify-release-4.mjs
+
+## Manual Review Gates
+
+- [ ] Project Owner review.
+- [ ] UBT/IT review for architecture/API/RBAC/storage/auth boundaries.
+- [ ] Legal/Q&C review for compliance/certification/export wording.
+- [ ] Engineer/inspector/SME review for RBI, risk, inspection, and technical labels.

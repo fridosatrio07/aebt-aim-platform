@@ -1,4 +1,4 @@
-# R4-05 — Operating Data Input
+# R4-05 - Operating Data Input
 
 ## Status
 

@@ -9,18 +9,19 @@ const requiredFoundationModels = ['Tenant', 'Project', 'Site', 'UserProfile', 'R
 const requiredRelease1Models = ['Facility', 'AssetSystem', 'AssetSubsystem', 'Equipment', 'Component', 'CmlTmlPoint', 'ThicknessReading', 'Document', 'DocumentVersion', 'DocumentLink', 'ImportBatch', 'ImportRow', 'ValidationIssue'];
 const requiredRelease2Models = ['ActionItem', 'GenericApprovalWorkflow', 'WorkflowTransition', 'NotificationDigest', 'NotificationDigestItem', 'ExportLog'];
 const requiredRelease3Models = ['InspectionDue', 'Workpack', 'WorkpackStep', 'CertificationRegister', 'CertificationChecklistItem', 'CertificationSubmissionLog', 'EvidenceChecklist', 'EvidenceChecklistItem', 'EvidencePack', 'EvidencePackItem', 'BusinessKpiSnapshot'];
-const forbiddenRelease4Models = ['RbiAssessment', 'DamageMechanism', 'RiskRankingRecord', 'RiskRegister', 'AnomalyAction', 'RbiCandidateRouting', 'RbiReviewApproval'];
+const requiredRelease4Models = ['RbiCandidate', 'RbiAssessment', 'RbiOperatingData', 'RbiDamageMechanism', 'RbiPofCofHelper', 'RbiRiskRanking', 'RbiRiskRegisterItem'];
+const forbiddenPostRelease4Models = ['AnomalyAction', 'FinalRbiApproval', 'RlaFinalDecision', 'FfsFinalDecision', 'InspectionIntervalExtension', 'RiskAcceptanceCriteriaChange'];
 
-for (const model of [...requiredFoundationModels, ...requiredRelease1Models, ...requiredRelease2Models, ...requiredRelease3Models]) {
+for (const model of [...requiredFoundationModels, ...requiredRelease1Models, ...requiredRelease2Models, ...requiredRelease3Models, ...requiredRelease4Models]) {
   if (!new RegExp(`model\\s+${model}\\b`).test(schema)) {
-    console.error(`Missing required Release 3 schema model: ${model}`);
+    console.error(`Missing required Release 4 schema model: ${model}`);
     process.exit(1);
   }
 }
 
-const violations = forbiddenRelease4Models.filter((model) => new RegExp(`model\\s+${model}\\b`).test(schema));
+const violations = forbiddenPostRelease4Models.filter((model) => new RegExp(`model\\s+${model}\\b`).test(schema));
 if (violations.length > 0) {
-  console.error(`Release 3 schema contains out-of-scope later-release models: ${violations.join(', ')}`);
+  console.error(`Release 4 schema contains out-of-scope post-release models: ${violations.join(', ')}`);
   process.exit(1);
 }
 
@@ -47,12 +48,24 @@ for (const enumName of [
   'EvidenceChecklistStatus',
   'EvidenceChecklistState',
   'EvidencePackStatus',
-  'EvidenceExportReadyStatus'
+  'EvidenceExportReadyStatus',
+  'RbiCandidateStatus',
+  'RbiScopingBasis',
+  'RbiAssessmentStatus',
+  'RbiMethodologyStatus',
+  'DamageMechanismCategory',
+  'DamageMechanismStatus',
+  'PofCofHelperStatus',
+  'PofCofLevel',
+  'RbiRiskLevel',
+  'RiskRankingStatus',
+  'RiskRegisterItemStatus',
+  'RiskRegisterCategory'
 ]) {
   if (!new RegExp(`enum\\s+${enumName}\\b`).test(schema)) {
-    console.error(`Missing required Release 3 enum: ${enumName}`);
+    console.error(`Missing required Release 4 enum: ${enumName}`);
     process.exit(1);
   }
 }
 
-console.log('Release 3 migration check passed');
+console.log('Release 4 migration check passed');

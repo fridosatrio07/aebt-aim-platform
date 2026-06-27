@@ -363,9 +363,38 @@
 - Date: 2026-06-26
 - Agent/session: Codex
 - Branch: Not applicable; `Source Code` is not currently a Git repository
-- Files changed: main/packages/shared/src/release-4.ts; main/packages/shared/tests/release-4.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/index.ts; main/apps/api/src/integrity-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/scripts/verify-release-4.mjs; main/scripts/release4-verify.mjs; main/package.json; docs/tasks/release-4/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md
+- Files changed: main/packages/shared/src/release-4.ts; main/packages/shared/tests/release-4.test.ts; main/packages/shared/src/rbac.ts; main/packages/shared/src/index.ts; main/apps/api/src/integrity-foundation/*; main/apps/api/src/app.module.ts; main/apps/web/src/components/AppShell.tsx; main/scripts/verify-release-4.mjs; main/scripts/release4-verify.mjs; main/scripts/migration-check.mjs; main/packages/database/prisma/schema.prisma; main/seed/release-4-integrity-foundation.json; main/tsconfig.base.json; main/apps/api/tsconfig.json; main/package.json; docs/tasks/release-4/*; docs/handoff/*; docs/ai-context/06_RELEASE_PLAN_R0_R4.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md
 - Implementation summary: Implemented Release 4 RBI candidate routing schema, RBI candidate UI, RBI assessment shell, RBI assessment stepper UI, operating data input, damage mechanism review placeholder, PoF/CoF helper interface, preliminary risk ranking record, RBI review and approval workflow, and risk register linkage.
-- Checks run: `pnpm run release4:verify` should be run after lint/typecheck/test/build/migration/analytics checks pass.
+- Checks run: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, `pnpm run migration:check`, `pnpm run analytics:check`, and `pnpm run release4:verify` passed on 2026-06-27.
 - Review status: Done, pending human/UBT/IT/Project Owner/SME/Q&C review as applicable.
 - Handoff link/notes: See `docs/handoff/RELEASE_4_HANDOFF.md`.
 - Open follow-up: Final migration execution, final physical schema/indexes, final API/RBAC contracts, SME-approved RBI methodology baseline (OD-006), Release 4 start gate closure (OD-018), production deployment, and pilot dataset remain open.
+
+
+## Release 5 Documentation Planning
+
+### Documentation-control event - Release 5 planning pack
+
+- Date: 2026-06-27
+- Agent/session: Codex
+- Branch: main
+- Files changed: docs/tasks/release-5/**, docs/frontend/**, docs/ai-context/16_RELEASE_PLAN_R5_R7.md, docs/tasks/TASK_INDEX.md, docs/ai-context/15_CHANGELOG_CONTEXT.md, docs/handoff/TASK_COMPLETION_LOG.md
+- Implementation summary: Created Release 5 planning documentation pack for front-end usability and design system hardening, plus high-level Release 6 and Release 7 outlines.
+- Checks run: Repository/source/documentation inspection only; no application build, migration, package install, or dependency command was run for this documentation-planning task.
+- Review status: Documentation planning complete, pending human review. No Release 5 implementation task is complete.
+- Handoff link/notes: See docs/tasks/release-5/README_RELEASE_5.md and docs/ai-context/16_RELEASE_PLAN_R5_R7.md.
+- Open follow-up: R5-01 should address documentation hygiene issues before implementation starts.
+
+## Release 5 - Front-End Usability & Design System Hardening
+
+### R5-01 through R5-10
+
+- Date: 2026-06-27
+- Agent/session: Codex
+- Branch: main
+- Files changed: main/apps/web/app/globals.css; main/apps/web/app/layout.tsx; main/apps/web/src/components/AppShell.tsx; main/apps/web/src/components/release5-data.ts; main/apps/web/src/components/release5-ui.tsx; docs/tasks/release-5/*; docs/frontend/*; docs/tasks/TASK_INDEX.md; docs/ai-context/14_OPEN_DECISIONS_AND_BLOCKERS.md; docs/ai-context/15_CHANGELOG_CONTEXT.md; docs/ai-context/16_RELEASE_PLAN_R5_R7.md; docs/handoff/*
+- Implementation summary: Implemented Release 5 front-end usability and design-system hardening as a single-route workbench with route/navigation matrix, reusable UI primitives, consistent mock data, page sections, interaction states, functional boundaries, acceptance checklist, and visible draft/preliminary/non-final guardrails.
+- Checks run: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, `pnpm run migration:check`, `pnpm run analytics:check`, `pnpm run release4:verify`, and `node scripts/verify-release-4.mjs` passed.
+- Review status: Done from implementation/check perspective; pending human Project Owner, UBT/IT, Legal/Q&C, engineer/inspector/SME review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_5_HANDOFF.md`.
+- Open follow-up: Release 6 persistence/API/storage readiness and Release 7 pilot/security/UAT/governance gates remain pending. No migration was run, no package files were changed, and no dependency was added.

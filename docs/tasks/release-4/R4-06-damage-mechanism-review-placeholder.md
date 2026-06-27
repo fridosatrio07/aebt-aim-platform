@@ -1,4 +1,4 @@
-# R4-06 — Damage Mechanism Review Placeholder
+# R4-06 - Damage Mechanism Review Placeholder
 
 ## Status
 

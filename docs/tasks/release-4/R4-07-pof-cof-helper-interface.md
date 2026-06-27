@@ -1,4 +1,4 @@
-# R4-07 — PoF CoF Helper Interface
+# R4-07 - PoF CoF Helper Interface
 
 ## Status
 
