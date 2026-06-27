@@ -1,4 +1,4 @@
-# Route Navigation Matrix
+﻿# Route Navigation Matrix
 
 ## Current Repository Observation
 
@@ -24,3 +24,9 @@ Current Next.js app exposes a single visible route, `/`, through `main/apps/web/
 | /admin | Administration | Governance/admin | Platform Admin, System Admin | Tenant, roles, scopes, templates, config | Planned backend pending | View config, prepare role visibility | Final OIDC/RBAC config disabled | /audit, /helpdesk | Dashboard > Admin | Needs UBT/IT Review | Planned |
 | /helpdesk | Helpdesk / Bug Log | Support | Helpdesk, Platform Admin, all users scoped | Support ticket and bug log intake | Planned mock/API-ready | Create ticket, assign, track status | SLA/escalation backend pending | /dashboard | Dashboard > Helpdesk | Needs Project Owner Review | Planned |
 
+
+## Release 6 Implementation Note
+
+- Release 6 route placeholders were created under `main/apps/web/app/` for the planned route hierarchy.
+- Route pages are shell placeholders using shared mock data and must remain labelled Mock/API-ready/Pending Backend/Needs Review until backend and authority reviews are completed.
+- Dynamic pages are placeholder shells only and do not fetch object-specific production data.

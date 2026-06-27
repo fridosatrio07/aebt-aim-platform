@@ -1,24 +1,14 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import {
   AlertTriangle,
-  BarChart3,
   CheckCircle2,
   Clock3,
-  Database,
   Eye,
-  FileText,
   Filter,
-  Inbox,
   Layers3,
-  LayoutDashboard,
-  LifeBuoy,
-  ListChecks,
-  LockKeyhole,
   Search,
-  ShieldCheck,
-  UserCheck
 } from 'lucide-react';
 import type {
   ActionItemRecord,
@@ -71,8 +61,10 @@ import {
   StatusBadge,
   toneForStatus
 } from './release5-ui';
+import { AppSidebar, AppTopbar } from './app-shell-chrome';
+import { breadcrumbForRoute, routeForWorkbenchTab, type WorkbenchTabId } from './app-routes';
 
-type WorkbenchTab = 'dashboard' | 'my-work' | 'asset-data' | 'business' | 'integrity' | 'state-lab' | 'admin-support';
+type WorkbenchTab = WorkbenchTabId;
 
 interface DrawerState {
   title: string;
@@ -92,28 +84,15 @@ const defaultDrawer: DrawerState = {
   warnings: [release5Scenario.decisionBoundary]
 };
 
-const workbenchTabs: Array<{ id: WorkbenchTab; label: string; icon: typeof LayoutDashboard; status: string }> = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, status: 'Mock' },
-  { id: 'my-work', label: 'My Work', icon: Inbox, status: 'API-ready' },
-  { id: 'asset-data', label: 'Assets & Documents', icon: Database, status: 'API-ready' },
-  { id: 'business', label: 'Inspection & Evidence', icon: FileText, status: 'API-ready' },
-  { id: 'integrity', label: 'RBI & Risk', icon: BarChart3, status: 'SME review' },
-  { id: 'state-lab', label: 'State Matrix', icon: ListChecks, status: 'Implemented' },
-  { id: 'admin-support', label: 'Admin & Helpdesk', icon: LifeBuoy, status: 'Pending backend' }
-];
-
-const scopeRows = [
-  { label: 'Tenant', value: release5Scenario.tenant },
-  { label: 'Client', value: release5Scenario.client },
-  { label: 'Project', value: release5Scenario.project },
-  { label: 'Site', value: release5Scenario.site }
-];
 
 export function AppShell() {
   const [activeTab, setActiveTab] = useState<WorkbenchTab>('dashboard');
   const [drawerOpen, setDrawerOpen] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [drawer, setDrawer] = useState<DrawerState>(defaultDrawer);
   const selectedPage = pageSummaries.find((item) => item.id === activeTab) ?? pageSummaries[0]!;
+  const selectedRoute = routeForWorkbenchTab(activeTab);
+  const breadcrumbs = breadcrumbForRoute(selectedRoute.id);
 
   function openDrawer(next: DrawerState) {
     setDrawer(next);
@@ -122,53 +101,17 @@ export function AppShell() {
 
   return (
     <main className="min-h-screen bg-aim-field text-aim-ink">
-      <div className="grid min-h-screen grid-cols-[300px_1fr] max-xl:grid-cols-1">
-        <aside className="border-r border-aim-line bg-white max-xl:border-b max-xl:border-r-0">
-          <div className="border-b border-aim-line px-4 py-4">
-            <p className="text-xs font-semibold uppercase text-aim-action">AIM Platform</p>
-            <h1 className="mt-1 text-xl font-semibold">Release 5 Workbench</h1>
-            <p className="mt-1 text-xs leading-5 text-slate-500">Front-end usability and design-system hardening.</p>
-          </div>
-
-          <div className="space-y-2 border-b border-aim-line bg-aim-field px-4 py-3">
-            {scopeRows.map((row) => (
-              <div key={row.label} className="flex items-start justify-between gap-3 text-xs">
-                <span className="text-slate-500">{row.label}</span>
-                <span className="max-w-[170px] text-right font-medium text-slate-800">{row.value}</span>
-              </div>
-            ))}
-          </div>
-
-          <nav className="space-y-1 px-3 py-4" aria-label="Release 5 workbench navigation">
-            {workbenchTabs.map((item) => {
-              const Icon = item.icon;
-              const active = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveTab(item.id)}
-                  className={`flex min-h-11 w-full items-center justify-between gap-2 rounded-md px-3 text-left text-sm ${active ? 'bg-aim-action text-white' : 'text-slate-700 hover:bg-aim-field'}`}
-                >
-                  <span className="flex min-w-0 items-center gap-2">
-                    <Icon aria-hidden size={17} />
-                    <span className="truncate">{item.label}</span>
-                  </span>
-                  <span className={`shrink-0 rounded-md px-2 py-1 text-[11px] ${active ? 'bg-white/20 text-white' : 'bg-aim-field text-slate-600'}`}>{item.status}</span>
-                </button>
-              );
-            })}
-          </nav>
-
-          <div className="border-t border-aim-line px-4 py-4">
-            <BoundaryBanner>
-              Draft/preliminary boundary active. Mock, API-ready, pending-backend, and disabled states are labelled in the UI.
-            </BoundaryBanner>
-          </div>
-        </aside>
+      <div className={`grid min-h-screen ${sidebarCollapsed ? 'grid-cols-[88px_1fr]' : 'grid-cols-[300px_1fr]'} max-xl:grid-cols-1`}>
+        <AppSidebar
+          activeTab={activeTab}
+          collapsed={sidebarCollapsed}
+          onToggleCollapsed={() => setSidebarCollapsed((value) => !value)}
+          onSelectTab={(tab) => tab && setActiveTab(tab)}
+        />
 
         <section className="min-w-0">
-          <PageHeader eyebrow="SPM-01 Demo Scope" title={selectedPage.page} description={selectedPage.purpose}>
+          <AppTopbar activeRoute={selectedRoute} breadcrumbs={breadcrumbs} />
+          <PageHeader eyebrow="SPM-01 Demo Scope" title={selectedPage.page} description={`${selectedRoute.path} - ${selectedPage.purpose}`}>
             <StatusBadge label={selectedPage.status} tone={toneForStatus(selectedPage.status.toLowerCase())} />
             <StatusBadge label="Draft/preliminary" tone="warning" />
           </PageHeader>
@@ -836,5 +779,7 @@ function Toolbar({ label, disabled = false }: { label: string; disabled?: boolea
     </div>
   );
 }
+
+
 
 

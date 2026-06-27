@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'AIM Platform - Release 5 Workbench',
-  description: 'AIM Platform Release 5 front-end usability and design system hardening workbench'
+  title: 'AIM Platform - Release 6 Shell',
+  description: 'AIM Platform Release 6 app shell, navigation hardening, and route-page shell'
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -13,3 +13,4 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
+

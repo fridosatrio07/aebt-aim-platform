@@ -1,4 +1,4 @@
-# Task Index
+﻿# Task Index
 
 A task checkbox may only be changed from `[ ]` to `[x]` after the corresponding task file shows `Done`, required checks are complete, and handoff notes are filled.
 
@@ -82,5 +82,20 @@ A task checkbox may only be changed from `[ ]` to `[x]` after the corresponding 
 - [x] R5-10 - Front-End Acceptance Checklist
 
 Release 5 task checkboxes may only be marked complete after the specific task file shows `Done`, required checks are completed, handoff notes are filled, and review has passed.
+## Release 6 - App Shell, Navigation Hardening, Route-Based Page Shell
+
+- [x] R6-01 - Release 6 Documentation Consistency Check
+- [x] R6-02 - App Shell Navigation Specification
+- [x] R6-03 - Navigation Registry and Route Registry
+- [x] R6-04 - App Shell Component Split
+- [x] R6-05 - Sidebar and Topbar Hardening
+- [x] R6-06 - Breadcrumb, Role Scope, Notification, and Search
+- [x] R6-07 - Route-Based Page Shell
+- [x] R6-08 - Placeholder Module Pages
+- [x] R6-09 - Access Boundary and Functional State Labels
+- [x] R6-10 - Release 6 Verification and Handoff
+
+Release 6 task checkboxes may only be marked complete after the specific task file shows `Done`, required checks are completed, handoff notes are filled, and review has passed.
+
 
 

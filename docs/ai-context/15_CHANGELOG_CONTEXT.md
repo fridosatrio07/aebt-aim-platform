@@ -91,3 +91,42 @@
 - No new dependency added.
 - Release 5 tasks remain unchecked.
 - Open decisions remain subject to Project Owner, UBT/IT, Legal, Q&C, engineer, inspector, and SME review.
+## 2026-06-27 - Release 6 Planning Documentation
+
+- Release 6 planning documentation created for app shell, navigation hardening, and route-based page shell preparation.
+- Created `docs/frontend/APP_SHELL_NAVIGATION_SPEC.md` and Release 6 task packets.
+- No Release 6 route folder rollout started during Phase 1.
+- Release 6 tasks remain unchecked until implementation, checks, handoff, and review conditions are met.
+- No database migration run.
+- No package files changed by the planning step.
+- No new dependency added.
+- Open decisions remain subject to Project Owner, UBT/IT, Legal/Q&C, engineer, inspector, and SME review.
+## 2026-06-27 - Release 6 Controlled Implementation
+
+- Implemented R6-03, R6-04, and R6-05 only.
+- Added lightweight route registry, navigation registry, and extracted app shell chrome components.
+- Hardened sidebar/topbar with active route state, route badges, breadcrumb metadata, scope placeholder, role review indicator, search placeholder, notification placeholder, quick-action placeholder, and boundary labels.
+- Did not create route folders or placeholder module pages.
+- No backend code modified.
+- No package files changed.
+- No dependencies added.
+- No database migrations run.
+- Ran and passed `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, and `pnpm run release4:verify`.`r`n- Browser smoke check passed at `http://127.0.0.1:3006` with Release 6 shell/navigation labels visible.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
+
+
+
+## 2026-06-27 - Release 6 Completion
+
+- Completed Release 6 App Shell, Navigation Hardening, and Route-Based Page Shell implementation.
+- Implemented R6-01 through R6-10 and marked Release 6 task packets/task index entries complete.
+- Added route-based placeholder pages under `main/apps/web/app/` for dashboard, my work, projects, assets, documents, validation, inspections, workpacks, certification, evidence packs, integrity/RBI, risk register, reviewer queue, administration, helpdesk, and state matrix routes.
+- Preserved the existing Release 5 root workbench.
+- No backend code modified.
+- No package files changed.
+- No dependencies added.
+- No database migrations run.
+- Ran and passed `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, and `pnpm run release4:verify`.
+- Fresh dev server route probes passed at `http://127.0.0.1:3007` for root, static routes, and dynamic placeholder routes.
+- Browser smoke check passed for `http://127.0.0.1:3007/integrity/rbi`.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.

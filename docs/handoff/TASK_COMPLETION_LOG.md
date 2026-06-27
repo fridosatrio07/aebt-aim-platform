@@ -1,4 +1,4 @@
-# Task Completion Log
+﻿# Task Completion Log
 
 ## Release 0 - Platform Foundation
 
@@ -398,3 +398,31 @@
 - Review status: Done from implementation/check perspective; pending human Project Owner, UBT/IT, Legal/Q&C, engineer/inspector/SME review as applicable.
 - Handoff link/notes: See `docs/handoff/RELEASE_5_HANDOFF.md`.
 - Open follow-up: Release 6 persistence/API/storage readiness and Release 7 pilot/security/UAT/governance gates remain pending. No migration was run, no package files were changed, and no dependency was added.
+## Release 6 Documentation Planning
+
+### Documentation-control event - Release 6 planning pack
+
+- Date: 2026-06-27
+- Agent/session: Codex
+- Branch: main
+- Files changed: docs/tasks/release-6/**, docs/frontend/APP_SHELL_NAVIGATION_SPEC.md, docs/ai-context/17_RELEASE_PLAN_R6_APP_SHELL_NAVIGATION.md, docs/tasks/TASK_INDEX.md, docs/ai-context/15_CHANGELOG_CONTEXT.md, docs/handoff/TASK_COMPLETION_LOG.md
+- Implementation summary: Created Release 6 planning pack for app shell/navigation hardening and route-based page-shell preparation. No Release 6 implementation task is complete from this planning entry alone.
+- Checks run: Repository/source/documentation inspection only for Phase 1 planning.
+- Review status: Documentation planning complete, pending human review.
+- Handoff link/notes: See docs/tasks/release-6/README_RELEASE_6.md and docs/ai-context/17_RELEASE_PLAN_R6_APP_SHELL_NAVIGATION.md.
+- Open follow-up: Implement R6-03 through R6-05 only after confirming scope and keeping route folders for a later task.
+
+
+## Release 6 - App Shell, Navigation Hardening, Route-Based Page Shell
+
+### R6-01 through R6-10
+
+- Date: 2026-06-27
+- Agent/session: Codex
+- Branch: main
+- Files changed: main/apps/web/app/**; main/apps/web/src/components/AppShell.tsx; main/apps/web/src/components/RoutePageShell.tsx; main/apps/web/src/components/app-routes.ts; main/apps/web/src/components/navigation-items.ts; main/apps/web/src/components/app-shell-chrome.tsx; docs/tasks/release-6/*; docs/frontend/APP_SHELL_NAVIGATION_SPEC.md; docs/frontend/FRONTEND_ACCEPTANCE_CHECKLIST.md; docs/frontend/ROUTE_NAVIGATION_MATRIX.md; docs/ai-context/17_RELEASE_PLAN_R6_APP_SHELL_NAVIGATION.md; docs/tasks/TASK_INDEX.md; docs/ai-context/15_CHANGELOG_CONTEXT.md; docs/handoff/*
+- Implementation summary: Completed Release 6 app shell/navigation hardening, route-page shell, placeholder module pages, boundary labels, verification, and handoff. Root workbench remains available.
+- Checks run: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, `pnpm run release4:verify`, route HTTP probes on port 3007, and browser smoke check passed.
+- Review status: Done from implementation/check perspective; pending human Project Owner, UBT/IT, Legal/Q&C, engineer/inspector/SME review as applicable.
+- Handoff link/notes: See `docs/handoff/RELEASE_6_HANDOFF.md`.
+- Open follow-up: Package metadata decision, final RBAC route visibility, and future backend/API/storage integration remain open.

@@ -1,4 +1,4 @@
-# Front-End Acceptance Checklist
+﻿# Front-End Acceptance Checklist
 
 ## Visual And UX Readiness
 
@@ -44,3 +44,12 @@
 - [ ] UBT/IT review for architecture/API/RBAC/storage/auth boundaries.
 - [ ] Legal/Q&C review for compliance/certification/export wording.
 - [ ] Engineer/inspector/SME review for RBI, risk, inspection, and technical labels.
+
+## Release 6 Route Shell Hardening
+
+- [x] Route-based pages exist for the planned Release 6 route hierarchy.
+- [x] Root workbench remains available at `/`.
+- [x] Sidebar route links work in route-page shell mode.
+- [x] Dynamic placeholder routes build successfully.
+- [x] Route pages show Mock/API-ready/Pending Backend/Needs Review/Draft labels.
+- [x] Browser smoke check passed at `http://127.0.0.1:3007/integrity/rbi`.
