@@ -162,7 +162,45 @@
 
 - Implemented CSS runtime tokens, Tailwind semantic mappings, tokenized RoutePageShell, tokenized app shell chrome, and tokenized shared UI primitives used by route pages.
 - Added docs/frontend/TOKEN_DECISION_LOG.md for provisional token values pending approval.
-- Updated main/package.json to  .0.0-release-8 and added elease8:verify.
+- Updated main/package.json to  .0.0-release-8 and added
+elease8:verify.
 - Verification passed: pnpm run release8:verify, pnpm run lint, pnpm run typecheck, pnpm run test, and pnpm run build.
 - No backend, API, database, migration, dependency, or final technical/legal/certification/RBI/RLA/FFS/fit-for-operation decision logic was introduced.
+
+## 2026-06-27 - Release 9 Asset Registry Implementation Guidance
+
+- Created docs-first Release 9 guidance for Asset Registry & Asset Hierarchy based on the Asset Registry MBS.
+- Added sidebar restoration guidance stating left sidebar is primary module navigation and topbar is contextual utility only.
+- Created `docs/modules/asset-registry/` module guidance set and Release 9 task packets R9-00 through R9-15.
+- No runtime code was implemented.
+- No package metadata or verification scripts were changed.
+- No backend/API/database/schema/storage/OIDC/RBAC persistence work was performed.
+- No build, lint, typecheck, test, pnpm, migration, or verification command was run.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
+
+## 2026-06-27 - Release 9 Implementation Step 1 Asset Registry Shell
+
+- Implemented Asset Registry List and Asset 360 mock/API-ready module shell under `main/apps/web`.
+- Reused existing shared R1-R4 mock data foundations and Release 8 app shell/navigation components.
+- Kept left sidebar as primary module navigation and topbar as contextual utility chrome.
+- Updated Asset Detail route metadata to Asset 360 with `API-ready` / `Mock` route status.
+- Updated Release 9 task index, README, handoff, and completion log with R9-16 completion.
+- No backend/API/database/schema/storage/OIDC/RBAC persistence work was performed.
+- No package file was modified.
+- No dependency was added.
+- No database migration was run.
+- Verification passed: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, and `pnpm run release8:verify`.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
+
+## 2026-06-27 - Release 9 Implementation Step 2 Validation Queue Workflow Hardening Progress
+
+- Continued Release 9 implementation by adding validation queue workflow hardening to the Asset Registry module shell.
+- Added validation queue tab and workflow placeholders in `main/apps/web/src/components/AssetRegistryModuleShell.tsx`.
+- Updated `docs/handoff/RELEASE_9_HANDOFF.md` and `docs/handoff/TASK_COMPLETION_LOG.md` to reflect Step 2 progress.
+- Verification commands were not run in this step due to usage-limit risk.
+- No backend/API/database/schema/storage/OIDC/RBAC persistence work was performed.
+- No package file was modified.
+- No dependency was added.
+- No database migration was run.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
 

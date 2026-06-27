@@ -1,5 +1,10 @@
-﻿import { RoutePageShell } from '../../../src/components/RoutePageShell';
+import { AssetRegistryModuleShell } from '../../../src/components/AssetRegistryModuleShell';
 
-export default function Page() {
-  return <RoutePageShell routeId="asset-detail" detailLabel="asset-detail placeholder" />;
+interface AssetDetailPageProps {
+  params: Promise<{ assetId: string }>;
+}
+
+export default async function Page({ params }: AssetDetailPageProps) {
+  const { assetId } = await params;
+  return <AssetRegistryModuleShell mode="detail" assetId={assetId} />;
 }

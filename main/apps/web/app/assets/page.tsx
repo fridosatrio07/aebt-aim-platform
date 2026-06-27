@@ -1,5 +1,5 @@
-﻿import { RoutePageShell } from '../../src/components/RoutePageShell';
+import { AssetRegistryModuleShell } from '../../src/components/AssetRegistryModuleShell';
 
 export default function Page() {
-  return <RoutePageShell routeId="assets" />;
+  return <AssetRegistryModuleShell mode="list" />;
 }

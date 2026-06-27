@@ -23,3 +23,13 @@ Record assumptions before or during implementation. Do not silently rely on assu
 | ASM-016 | Release 5 | Single-route Release 5 workbench is acceptable for front-end hardening because production multi-route implementation was not required in Release 5 and route matrix remains API-ready/planned. | Existing app exposed only `/`; Release 5 scope focuses on usability, route/navigation planning, reusable components, state labels, and mock/API-ready boundaries. | Future Release 6/7 or approved frontend task may implement physical routes and API-client routing. | Project Owner + UBT/IT | Open |
 | ASM-017 | Release 5 | Existing R1-R4 static/shared foundations are acceptable as the single mock scenario for Release 5. | Release 5 must keep mock data consistent and avoid production persistence/object storage. | Demo/UAT-prep UI is coherent, but production data integration remains blocked until Release 6. | Project Owner + UBT/IT | Open |
 | ASM-018 | Release 5 | Release 5 can preserve Release 4 verifier labels inside the new workbench instead of changing the Release 4 verifier/package scripts. | Package files and verifier behavior are protected; legacy Release 4 regression checks should remain valid. | Release 5 UI includes R4 surface labels while presenting a broader R5 workbench. | Project Owner + UBT/IT | Open |
+
+## R9-A01
+
+- assumption ID: R9-A01
+- related task: R9-01 through R9-15
+- assumption statement: No existing module-specific documentation directory convention was found under `docs/`, so `docs/modules/asset-registry/` was created per the Release 9 prompt.
+- reason: The prompt instructed creating `docs/modules/asset-registry/` if no module-specific convention existed.
+- impact: Future module documentation can use the same directory pattern unless the Project Owner chooses another convention.
+- required reviewer: Project Owner / UBT-IT documentation owner
+- status: Open

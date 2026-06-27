@@ -1,4 +1,4 @@
-﻿# Task Index
+# Task Index
 
 A task checkbox may only be changed from `[ ]` to `[x]` after the corresponding task file shows `Done`, required checks are complete, and handoff notes are filled.
 
@@ -129,3 +129,25 @@ Release 7 task checkboxes may only be marked complete after the specific task fi
 - [x] R8-10 - Release 8 docs-only handoff
 
 Release 8 task checkboxes may only be marked complete after the specific task file shows `Done`, required documentation is complete, and handoff notes are filled.
+
+## Release 9 - Asset Registry & Asset Hierarchy Module Implementation Guidance
+
+- [x] R9-00 - App shell sidebar restoration guidance before Asset Registry module implementation
+- [x] R9-01 - Read and decompose Asset Registry MBS source
+- [x] R9-02 - Asset Registry scope, boundary, and implementation phases
+- [x] R9-03 - Asset hierarchy and taxonomy guidance
+- [x] R9-04 - Asset Registry data requirements and field baseline
+- [x] R9-05 - Workflow, routing, and status lifecycle
+- [x] R9-06 - Business rules and validation rules
+- [x] R9-07 - Asset Registry List screen specification
+- [x] R9-08 - Asset Detail / Asset 360 screen specification
+- [x] R9-09 - Data import mapping and validation queue specification
+- [x] R9-10 - Component behavior, badge, drawer, import, and export rules
+- [x] R9-11 - RBAC, permission, approval, audit, and export-control guidance
+- [x] R9-12 - API dependency and integration boundary planning
+- [x] R9-13 - Error, exception, edge-case, and negative test guidance
+- [x] R9-14 - UAT and acceptance mapping
+- [x] R9-15 - Dependencies, open issues, decision log, and handoff
+- [x] R9-16 - Implementation Step 1: Asset Registry List and Asset 360 Mock/API-ready Module Shell
+
+Release 9 task checkboxes R9-00 through R9-15 indicate docs-first guidance completion. R9-16 records the controlled runtime Step 1 implementation only; remaining implementation requires future approved tasks.

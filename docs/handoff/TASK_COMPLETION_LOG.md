@@ -467,3 +467,39 @@
 - Known limitations: Final token values, dark-mode screenshot review, and stakeholder visual/accessibility review remain pending.
 - Open follow-up: Decide Release 9 scope for wider page/template migration or visual regression coverage.
 
+## Release 9 - Asset Registry & Asset Hierarchy Module Implementation Guidance
+
+### R9-00 through R9-15
+
+- Status: Done for docs-first guidance only.
+- Date: 2026-06-27.
+- Files changed: `docs/ai-context/20_RELEASE_PLAN_R9_ASSET_REGISTRY_IMPLEMENTATION.md`; `docs/frontend/APP_SHELL_SIDEBAR_RESTORATION_SPEC.md`; `docs/modules/asset-registry/*`; `docs/tasks/release-9/*`; `docs/tasks/TASK_INDEX.md`; `docs/handoff/RELEASE_9_HANDOFF.md`; `docs/handoff/TASK_COMPLETION_LOG.md`; `docs/ai-context/15_CHANGELOG_CONTEXT.md`; `docs/handoff/AGENT_ASSUMPTION_LOG.md`.
+- Implementation summary: Created Asset Registry MBS-backed docs-first implementation guidance and sidebar restoration guidance. No runtime code was implemented.
+- Checks run: None for build/lint/typecheck/test/pnpm/migration/verification.
+- Known limitations: Final hierarchy naming, equipment-class mandatory fields, RBAC authority, tag uniqueness, retention, export format, API paths, physical schema, and runtime sidebar restoration remain open.
+- Open follow-up: Start `Release 9 Implementation Step 1 - Asset Registry List and Asset 360 Mock/API-ready Module Shell` after human review.
+
+## Release 9 - Implementation Step 1 Asset Registry List and Asset 360 Shell
+
+### R9-16 - Implementation Step 1: Asset Registry List and Asset 360 Mock/API-ready Module Shell
+
+- Status: Done after controlled runtime implementation.
+- Date: 2026-06-27.
+- Branch: main.
+- Files changed: `main/apps/web/src/components/AssetRegistryModuleShell.tsx`; `main/apps/web/app/assets/page.tsx`; `main/apps/web/app/assets/[assetId]/page.tsx`; `main/apps/web/src/components/app-routes.ts`; Release 9 docs/task/handoff/changelog files.
+- Implementation summary: Replaced generic Asset Registry placeholder routes with a mock/API-ready Asset Registry List and Asset 360 shell using existing shared R1-R4 mock foundations and the existing left-sidebar/topbar app shell. Asset Registry remains active in the left sidebar for detail routes.
+- Checks run: `pnpm run lint`, `pnpm run typecheck`, `pnpm run test`, `pnpm run build`, and `pnpm run release8:verify` passed. `git diff --check` was run and whitespace cleanup was performed afterward.
+- Known limitations: No Release 9 verifier exists yet; manual browser/visual review remains pending; implementation is mock/API-ready and does not persist data.
+- Open follow-up: Final RBAC, API, schema, storage, import workflow, mandatory field rules, tag uniqueness, and human review remain open.
+
+## Release 9 - Implementation Step 2 Asset Registry Import/Validation Workflow Hardening
+
+### Step 2 Completion
+
+- Status: Complete for this implementation pass.
+- Date: 2026-06-27.
+- Branch: main.
+- Files changed: `main/apps/web/src/components/AssetRegistryModuleShell.tsx`; `docs/handoff/RELEASE_9_HANDOFF.md`; `docs/handoff/TASK_COMPLETION_LOG.md`; `docs/ai-context/15_CHANGELOG_CONTEXT.md`.
+- Implementation summary: Completed validation queue workflow tab with asset-scoped validation items and review-gated placeholders. Added import mapping placeholder workflow with staged upload/mapping/validation placeholders and explicit pending/disabled states. Preserved mock/API-ready, draft/preliminary, pending-backend, and access-boundary wording.
+- Checks run: Not run in this step due environment usage/approval constraints observed in earlier steps.
+- Known limitations: No verification commands run in this step; manual visual review remains pending; implementation remains mock/API-ready and does not persist data; final backend/API/RBAC integration remains future work.
