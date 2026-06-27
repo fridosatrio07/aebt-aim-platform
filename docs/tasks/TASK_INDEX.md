@@ -114,3 +114,18 @@ Release 6 task checkboxes may only be marked complete after the specific task fi
 - [x] R7-10 - Release 7 Verification and Handoff
 
 Release 7 task checkboxes may only be marked complete after the specific task file shows `Done`, required checks are completed, and handoff notes are filled.
+
+## Release 8 - UI Runtime Tokenization & Industrial Console Shell Implementation
+
+- [x] R8-01 - Release 8 source review and UI runtime gap mapping
+- [x] R8-02 - CSS variable runtime token specification
+- [x] R8-03 - Tailwind semantic token mapping specification
+- [x] R8-04 - shadcn/ui-compatible theme mapping specification
+- [x] R8-05 - RoutePageShell industrial console layout specification
+- [x] R8-06 - RoutePageShell semantic status and copy rules
+- [x] R8-07 - RoutePageShell visual acceptance checklist
+- [x] R8-08 - Implementation sequencing and non-bulk coding guardrails
+- [x] R8-09 - Screenshot/manual review guidance for future implementation
+- [x] R8-10 - Release 8 docs-only handoff
+
+Release 8 task checkboxes may only be marked complete after the specific task file shows `Done`, required documentation is complete, and handoff notes are filled.

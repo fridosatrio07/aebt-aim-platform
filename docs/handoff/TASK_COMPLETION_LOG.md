@@ -1,4 +1,4 @@
-﻿# Task Completion Log
+# Task Completion Log
 
 ## Release 0 - Platform Foundation
 
@@ -440,3 +440,30 @@
 - Review status: Documentation/governance complete from implementation perspective; pending human review.
 - Handoff link/notes: See `docs/handoff/RELEASE_7_HANDOFF.md`.
 - Open follow-up: Future implementation release must apply tokens, dark mode, shadcn/ui overrides, component contracts, and page templates in code.
+
+## Release 8 - UI Runtime Tokenization & Industrial Console Shell Implementation
+
+### R8-01 through R8-10
+
+- Date: 2026-06-27
+- Agent/session: Codex
+- Branch: main
+- Files changed: docs/ai-context/19_RELEASE_PLAN_R8_UI_RUNTIME_TOKENIZATION_ROUTE_PAGE_SHELL.md; docs/frontend/UI_RUNTIME_TOKENIZATION_IMPLEMENTATION_SPEC.md; docs/frontend/CSS_TAILWIND_TOKEN_MAPPING_PLAN.md; docs/frontend/ROUTE_PAGE_SHELL_INDUSTRIAL_CONSOLE_SPEC.md; docs/frontend/ROUTE_PAGE_SHELL_VISUAL_ACCEPTANCE_CRITERIA.md; docs/frontend/INDUSTRIAL_CONSOLE_UI_COPY_AND_STATUS_RULES.md; docs/tasks/release-8/README_RELEASE_8.md; docs/tasks/release-8/R8-01* through R8-10*; docs/tasks/TASK_INDEX.md; docs/handoff/RELEASE_8_HANDOFF.md; docs/handoff/TASK_COMPLETION_LOG.md; docs/ai-context/15_CHANGELOG_CONTEXT.md
+- Implementation summary: Created Release 8 documentation-guidance foundation for UI runtime tokenization and RoutePageShell industrial console implementation. No runtime code was implemented. Package metadata and verification scripts were intentionally not changed. Release 7 package metadata mismatch remains open by instruction.
+- Checks run: None. Documentation task only.
+- Review status: Documentation/governance complete from implementation perspective; pending human review.
+- Handoff link/notes: See `docs/handoff/RELEASE_8_HANDOFF.md`.
+- Open follow-up: Future implementation prompt `Release 8 Implementation Step 1 — Runtime Tokens and RoutePageShell Pilot` and manual Project Owner/UBT/IT/Legal/Q&C/SME review.
+
+## Release 8 - Runtime Tokenization Implementation Completion
+
+### R8-01 through R8-10
+
+- Status: Done after controlled runtime implementation.
+- Date: 2026-06-27.
+- Files changed: Release 8 docs; main/apps/web/app/globals.css; main/apps/web/tailwind.config.ts; main/apps/web/src/components/RoutePageShell.tsx; main/apps/web/src/components/app-shell-chrome.tsx; main/apps/web/src/components/release5-ui.tsx; main/package.json; main/scripts/release8-verify.mjs.
+- Implementation summary: Added runtime token layer, Tailwind semantic mappings, RoutePageShell Industrial Console pilot, app shell token usage, tokenized shared UI primitives, package metadata, and Release 8 verifier.
+- Checks run: pnpm run release7:verify passed before Release 8 metadata bump; pnpm run release8:verify, pnpm run lint, pnpm run typecheck, pnpm run test, and pnpm run build passed after implementation.
+- Known limitations: Final token values, dark-mode screenshot review, and stakeholder visual/accessibility review remain pending.
+- Open follow-up: Decide Release 9 scope for wider page/template migration or visual regression coverage.
+

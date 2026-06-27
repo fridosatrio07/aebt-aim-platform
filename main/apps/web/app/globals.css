@@ -1,9 +1,98 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+.light {
   color-scheme: light;
+  --background: #f5f7f4;
+  --foreground: #17201b;
+  --surface-1: #ffffff;
+  --surface-2: #eff4ef;
+  --surface-3: #e4ece6;
+  --border-subtle: #c9d6cc;
+  --border-strong: #8fa393;
+  --text-muted: #52615a;
+  --text-disabled: #8a978f;
+  --brand-navy: #17201b;
+  --brand-blue: #1d4f8f;
+  --intelligence-cyan: #0e7490;
+  --integrity-teal: #0f766e;
+  --status-success: #0f766e;
+  --status-warning: #b45309;
+  --status-danger: #be123c;
+  --status-draft: #64748b;
+  --status-pending-review: #7c3aed;
+  --status-approved: #047857;
+  --risk-low: #0f766e;
+  --risk-medium: #b45309;
+  --risk-high: #c2410c;
+  --risk-critical: #be123c;
+  --due-normal: #0f766e;
+  --due-soon: #b45309;
+  --due-overdue: #be123c;
+  --evidence-ready: #0f766e;
+  --evidence-missing: #b45309;
+  --export-ready: #047857;
+  --export-warning: #b45309;
+  --card: var(--surface-1);
+  --popover: var(--surface-2);
+  --primary: var(--integrity-teal);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-muted);
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--integrity-teal);
+  --destructive: var(--status-danger);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #08110e;
+  --foreground: #e8f0ec;
+  --surface-1: #0f1b17;
+  --surface-2: #152620;
+  --surface-3: #1d342c;
+  --border-subtle: #315047;
+  --border-strong: #5f7f73;
+  --text-muted: #b7c7bf;
+  --text-disabled: #73877d;
+  --brand-navy: #d8e6ef;
+  --brand-blue: #7db7ff;
+  --intelligence-cyan: #67e8f9;
+  --integrity-teal: #5eead4;
+  --status-success: #5eead4;
+  --status-warning: #fbbf24;
+  --status-danger: #fb7185;
+  --status-draft: #cbd5e1;
+  --status-pending-review: #c4b5fd;
+  --status-approved: #86efac;
+  --risk-low: #5eead4;
+  --risk-medium: #fbbf24;
+  --risk-high: #fb923c;
+  --risk-critical: #fb7185;
+  --due-normal: #5eead4;
+  --due-soon: #fbbf24;
+  --due-overdue: #fb7185;
+  --evidence-ready: #5eead4;
+  --evidence-missing: #fbbf24;
+  --export-ready: #86efac;
+  --export-warning: #fbbf24;
+  --card: var(--surface-1);
+  --popover: var(--surface-2);
+  --primary: var(--integrity-teal);
+  --primary-foreground: #04110e;
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--text-muted);
+  --border: var(--border-subtle);
+  --input: var(--border-subtle);
+  --ring: var(--intelligence-cyan);
+  --destructive: var(--status-danger);
 }
 
 * {
@@ -12,8 +101,8 @@
 
 body {
   margin: 0;
-  background: #f5f7f4;
-  color: #17201b;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 button,
@@ -24,6 +113,6 @@ select {
 button:focus-visible,
 select:focus-visible,
 a:focus-visible {
-  outline: 2px solid #0f766e;
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
 }

@@ -1,11 +1,11 @@
-﻿'use client';
+'use client';
 
-import { useState } from 'react';
-import { AlertTriangle, ArrowRight, ClipboardList, LockKeyhole } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { AlertTriangle, ArrowRight, ClipboardList, Database, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { breadcrumbForRoute, routeById, type AppRouteId } from './app-routes';
 import { AppSidebar, AppTopbar } from './app-shell-chrome';
 import { boundaryItems, interactionStates, release5Data, release5Scenario } from './release5-data';
-import { BoundaryBanner, DetailRow, EmptyState, PageHeader, SectionPanel, StatusBadge, toneForStatus } from './release5-ui';
+import { DetailRow, EmptyState, StatusBadge, toneForStatus, type BadgeTone } from './release5-ui';
 
 interface RoutePageShellProps {
   routeId: AppRouteId;
@@ -27,65 +27,70 @@ export function RoutePageShell({ routeId, detailLabel }: RoutePageShellProps) {
   const previewRows = buildPreviewRows(route.id, detailLabel);
 
   return (
-    <main className="min-h-screen bg-aim-field text-aim-ink">
+    <main className="min-h-screen bg-background text-foreground">
       <div className={`grid min-h-screen ${sidebarCollapsed ? 'grid-cols-[88px_1fr]' : 'grid-cols-[300px_1fr]'} max-xl:grid-cols-1`}>
         <AppSidebar activeRouteId={route.id} collapsed={sidebarCollapsed} onToggleCollapsed={() => setSidebarCollapsed((value) => !value)} />
 
-        <section className="min-w-0">
+        <section className="min-w-0 bg-background">
           <AppTopbar activeRoute={route} breadcrumbs={breadcrumbs} />
-          <PageHeader eyebrow="Release 6 route shell" title={detailLabel ?? route.pageTitle} description={`${route.path} - ${route.guardrail}`}>
-            <StatusBadge label={route.status} tone={toneForStatus(route.status.toLowerCase())} />
-            <StatusBadge label={route.dataStatus} tone={toneForStatus(route.dataStatus.toLowerCase())} />
-            <StatusBadge label="Draft/preliminary" tone="warning" />
-          </PageHeader>
+          <RouteConsoleHeader routeTitle={detailLabel ?? route.pageTitle} routePath={route.path} module={route.module} guardrail={route.guardrail} status={route.status} dataStatus={route.dataStatus} />
 
           <div className="grid gap-4 p-4 2xl:grid-cols-[minmax(0,1fr)_380px]">
             <div className="min-w-0 space-y-4">
-              <SectionPanel title="Route-Based Page Shell" kicker="Controlled Release 6 placeholder">
-                <div className="grid gap-3 lg:grid-cols-3">
-                  <DetailRow label="Module" value={route.module} />
-                  <DetailRow label="Data source" value={route.dataStatus} />
-                  <DetailRow label="Permission note" value={route.permissionNote} />
+              <ConsolePanel title="Operational Context" kicker="Release 8 Industrial Integrity Command Console pilot">
+                <div className="grid gap-3 lg:grid-cols-4">
+                  <DetailRow label="Tenant" value={release5Scenario.tenant} />
+                  <DetailRow label="Project" value={release5Scenario.project} />
+                  <DetailRow label="Site" value={release5Scenario.site} />
+                  <DetailRow label="Role scope" value="Needs RBAC Review" />
                 </div>
-                <div className="mt-3 grid gap-3 lg:grid-cols-3">
-                  <BoundaryBanner>Mock/API-ready page shell only. Real persistence, object storage, OIDC, and production API wiring remain pending.</BoundaryBanner>
-                  <BoundaryBanner>All technical outputs remain draft/preliminary until reviewed by authorized personnel.</BoundaryBanner>
-                  <BoundaryBanner>Route page is usable for navigation and review planning, not for final operational decisions.</BoundaryBanner>
+                <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                  <ConsoleNotice tone="info">Mock/API-ready shell. Backend wiring, persistence, object storage, OIDC, and production API integration remain pending.</ConsoleNotice>
+                  <ConsoleNotice tone="warning">All technical output remains draft/preliminary until authorized personnel review and approve it.</ConsoleNotice>
+                  <ConsoleNotice tone="danger">No final technical decision, certification decision, RBI decision, legal interpretation, or fit-for-operation outcome is produced.</ConsoleNotice>
                 </div>
-              </SectionPanel>
+              </ConsolePanel>
 
-              <SectionPanel title="Shared Scenario Preview" kicker={release5Scenario.project} actions={<StatusBadge label="Uses Release 5 shared data" tone="draft" />}>
+              <ConsolePanel title="Shared Scenario Preview" kicker={release5Scenario.project} actions={<StatusBadge label="Uses Release 5 shared data" tone="draft" />}>
                 {previewRows.length > 0 ? <RoutePreviewTable rows={previewRows} /> : <EmptyState title="No preview rows" detail="This route is a shell placeholder pending backend and SME/UBT/IT review." />}
-              </SectionPanel>
+              </ConsolePanel>
 
-              <SectionPanel title="Action Boundary" kicker="Disabled or API-ready until future implementation">
+              <ConsolePanel title="Action Boundary" kicker="Disabled or API-ready until future implementation">
                 <div className="grid gap-3 md:grid-cols-3">
                   <BoundaryAction label="Open filtered workbench" status="Mock" detail="Use current route context only; no persistent route state." />
                   <BoundaryAction label="Submit for review" status="API-ready" detail="Requires final workflow authority and backend persistence." />
                   <BoundaryAction label="Export evidence" status="Pending Backend" detail="Requires object storage, export log, and authority review." />
                 </div>
-              </SectionPanel>
+              </ConsolePanel>
             </div>
 
             <aside className="space-y-4">
-              <SectionPanel title="Access Boundary" kicker="Planning-only role visibility">
+              <ConsolePanel title="Readiness Rail" kicker="Evidence, review, and audit visibility">
                 <div className="space-y-3 text-sm">
-                  <p className="flex items-start gap-2 text-slate-700"><LockKeyhole aria-hidden className="mt-0.5" size={16} />Final RBAC enforcement remains Needs RBAC Review.</p>
-                  <p className="flex items-start gap-2 text-slate-700"><AlertTriangle aria-hidden className="mt-0.5" size={16} />No route grants final approval, legal interpretation, or asset safety authority.</p>
-                  <p className="flex items-start gap-2 text-slate-700"><ClipboardList aria-hidden className="mt-0.5" size={16} />Audit and evidence concepts are visible, but persistence is pending backend integration.</p>
+                  <RailRow icon={<ShieldCheck aria-hidden size={16} />} label="Evidence" value="Evidence pending" tone="warning" />
+                  <RailRow icon={<ClipboardList aria-hidden size={16} />} label="Review" value="Pending review" tone="review" />
+                  <RailRow icon={<Database aria-hidden size={16} />} label="Audit trail" value="Concept visible" tone="draft" />
                 </div>
-              </SectionPanel>
+              </ConsolePanel>
 
-              <SectionPanel title="Functional Labels" kicker="Release 6 control state">
+              <ConsolePanel title="Access Boundary" kicker="Planning-only role visibility">
+                <div className="space-y-3 text-sm text-text-muted">
+                  <p className="flex items-start gap-2"><LockKeyhole aria-hidden className="mt-0.5 text-integrity-teal" size={16} />Final RBAC enforcement remains Needs RBAC Review.</p>
+                  <p className="flex items-start gap-2"><AlertTriangle aria-hidden className="mt-0.5 text-status-warning" size={16} />No route grants final approval, legal interpretation, or asset safety authority.</p>
+                  <p className="flex items-start gap-2"><ClipboardList aria-hidden className="mt-0.5 text-intelligence-cyan" size={16} />Audit and evidence concepts are visible, but persistence is pending backend integration.</p>
+                </div>
+              </ConsolePanel>
+
+              <ConsolePanel title="Functional Labels" kicker="Release 8 control state">
                 <div className="space-y-2">
                   {['Mock', 'API-ready', 'Pending Backend', 'Disabled', 'Needs Review', 'Draft/preliminary'].map((label) => (
-                    <div key={label} className="flex items-center justify-between gap-3 border-b border-aim-line py-2 text-sm last:border-b-0">
+                    <div key={label} className="flex items-center justify-between gap-3 border-b border-border-subtle py-2 text-sm last:border-b-0">
                       <span>{label}</span>
                       <StatusBadge label="Visible" tone={toneForStatus(label.toLowerCase())} />
                     </div>
                   ))}
                 </div>
-              </SectionPanel>
+              </ConsolePanel>
             </aside>
           </div>
         </section>
@@ -94,23 +99,72 @@ export function RoutePageShell({ routeId, detailLabel }: RoutePageShellProps) {
   );
 }
 
+function RouteConsoleHeader({ routeTitle, routePath, module, guardrail, status, dataStatus }: { routeTitle: string; routePath: string; module: string; guardrail: string; status: string; dataStatus: string }) {
+  return (
+    <header className="border-b border-border-strong bg-surface-1 px-5 py-4 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase text-integrity-teal">Industrial Integrity Command Console</p>
+          <h1 className="mt-1 text-2xl font-semibold text-foreground">{routeTitle}</h1>
+          <p className="mt-1 max-w-4xl text-sm leading-6 text-text-muted">{routePath} - {guardrail}</p>
+        </div>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <StatusBadge label={module} tone="info" />
+          <StatusBadge label={status} tone={toneForStatus(status.toLowerCase())} />
+          <StatusBadge label={dataStatus} tone={toneForStatus(dataStatus.toLowerCase())} />
+          <StatusBadge label="Draft/preliminary" tone="warning" />
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function ConsolePanel({ title, kicker, actions, children }: { title: string; kicker?: string; actions?: ReactNode; children: ReactNode }) {
+  return (
+    <section className="border border-border-subtle bg-surface-1 shadow-sm">
+      <div className="flex min-h-12 flex-wrap items-center justify-between gap-3 border-b border-border-subtle bg-surface-2 px-4 py-3">
+        <div className="min-w-0">
+          <h2 className="truncate text-base font-semibold text-foreground">{title}</h2>
+          {kicker ? <p className="mt-0.5 text-xs text-text-muted">{kicker}</p> : null}
+        </div>
+        {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
+      </div>
+      <div className="p-4">{children}</div>
+    </section>
+  );
+}
+
+function ConsoleNotice({ tone, children }: { tone: 'info' | 'warning' | 'danger'; children: ReactNode }) {
+  const toneClass = tone === 'danger' ? 'border-status-danger text-status-danger' : tone === 'warning' ? 'border-status-warning text-status-warning' : 'border-intelligence-cyan text-brand-blue';
+  return <div className={`border-l-4 bg-surface-2 px-3 py-2 text-sm leading-6 ${toneClass}`} role="note">{children}</div>;
+}
+
+function RailRow({ icon, label, value, tone }: { icon: ReactNode; label: string; value: string; tone: BadgeTone }) {
+  return (
+    <div className="flex items-center justify-between gap-3 border-b border-border-subtle py-2 last:border-b-0">
+      <span className="flex items-center gap-2 text-text-muted">{icon}{label}</span>
+      <StatusBadge label={value} tone={tone} />
+    </div>
+  );
+}
+
 function BoundaryAction({ label, status, detail }: { label: string; status: string; detail: string }) {
   return (
-    <button type="button" disabled className="min-h-28 border border-aim-line bg-aim-field px-4 py-3 text-left text-sm text-slate-600" title={`${label} - ${status}`}>
+    <button type="button" disabled className="min-h-28 border border-border-subtle bg-surface-2 px-4 py-3 text-left text-sm text-text-muted disabled:cursor-not-allowed" title={`${label} - ${status}`}>
       <span className="flex items-center justify-between gap-3">
-        <span className="font-semibold text-aim-ink">{label}</span>
+        <span className="font-semibold text-foreground">{label}</span>
         <StatusBadge label={status} tone={toneForStatus(status.toLowerCase())} />
       </span>
-      <span className="mt-2 flex items-start gap-2 text-xs leading-5"><ArrowRight aria-hidden className="mt-0.5" size={14} />{detail}</span>
+      <span className="mt-2 flex items-start gap-2 text-xs leading-5"><ArrowRight aria-hidden className="mt-0.5 text-integrity-teal" size={14} />{detail}</span>
     </button>
   );
 }
 
 function RoutePreviewTable({ rows }: { rows: PreviewRow[] }) {
   return (
-    <div className="overflow-x-auto border border-aim-line bg-white">
+    <div className="overflow-x-auto border border-border-subtle bg-surface-1">
       <table className="w-full border-collapse text-left text-sm">
-        <thead className="bg-aim-field text-xs uppercase text-slate-600">
+        <thead className="bg-surface-2 text-xs uppercase text-text-muted">
           <tr>
             <th className="px-3 py-2">Item</th>
             <th className="px-3 py-2">Context</th>
@@ -120,11 +174,11 @@ function RoutePreviewTable({ rows }: { rows: PreviewRow[] }) {
         </thead>
         <tbody>
           {rows.map((row) => (
-            <tr key={row.id} className="border-t border-aim-line">
-              <td className="px-3 py-2 font-medium text-aim-ink">{row.primary}</td>
-              <td className="px-3 py-2 text-slate-600">{row.secondary}</td>
+            <tr key={row.id} className="border-t border-border-subtle hover:bg-surface-2">
+              <td className="px-3 py-2 font-medium text-foreground">{row.primary}</td>
+              <td className="px-3 py-2 text-text-muted">{row.secondary}</td>
               <td className="px-3 py-2"><StatusBadge label={row.state} tone={toneForStatus(row.state.toLowerCase())} /></td>
-              <td className="px-3 py-2 text-slate-600">{row.boundary}</td>
+              <td className="px-3 py-2 text-text-muted">{row.boundary}</td>
             </tr>
           ))}
         </tbody>

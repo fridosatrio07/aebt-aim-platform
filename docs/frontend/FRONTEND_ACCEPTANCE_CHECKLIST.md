@@ -1,4 +1,4 @@
-﻿# Front-End Acceptance Checklist
+# Front-End Acceptance Checklist
 
 ## Visual And UX Readiness
 
@@ -73,3 +73,17 @@
 - [ ] Full component/page token refactor completed in code.
 - [ ] Dark mode visually implemented and reviewed.
 - [ ] Project Owner/UBT/IT/Legal/Q&C/SME manual review completed.
+
+## Release 8 Runtime Tokenization Pilot
+
+- [x] CSS variables exist for light and dark token layers.
+- [x] Tailwind semantic token mappings exist.
+- [x] Existing im compatibility keys remain available during migration.
+- [x] RoutePageShell uses semantic runtime tokens.
+- [x] App shell chrome uses semantic token classes.
+- [x] Shared route-shell UI primitives use semantic token classes.
+- [x] Mock/API-ready/pending-backend and draft/preliminary labels remain visible.
+- [x] No final technical/legal/certification/RBI/RLA/FFS/fit-for-operation decision wording was introduced.
+- [ ] Browser screenshot review completed for light mode.
+- [ ] Browser screenshot review completed for dark mode.
+- [ ] Final token values approved by Project Owner/UI/UX/UBT/IT.
