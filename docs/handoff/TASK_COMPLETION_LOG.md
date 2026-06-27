@@ -426,3 +426,17 @@
 - Review status: Done from implementation/check perspective; pending human Project Owner, UBT/IT, Legal/Q&C, engineer/inspector/SME review as applicable.
 - Handoff link/notes: See `docs/handoff/RELEASE_6_HANDOFF.md`.
 - Open follow-up: Package metadata decision, final RBAC route visibility, and future backend/API/storage integration remain open.
+
+## Release 7 - UI/UX Design System Compliance & App Shell Hardening
+
+### R7-01 through R7-10
+
+- Date: 2026-06-27
+- Agent/session: Codex
+- Branch: main
+- Files changed: docs/ai-context/18_RELEASE_PLAN_R7_UI_UX_DESIGN_SYSTEM_COMPLIANCE.md; docs/frontend/DESIGN_SYSTEM_COMPLIANCE_SPEC.md; docs/frontend/DESIGN_TOKENS_THEME_CONTRACT.md; docs/frontend/COMPONENT_VISUAL_CONTRACT.md; docs/frontend/APP_SHELL_HARDENING_SPEC.md; docs/frontend/FRONTEND_ACCEPTANCE_CHECKLIST.md; docs/tasks/release-7/*; docs/tasks/TASK_INDEX.md; docs/handoff/RELEASE_7_HANDOFF.md; docs/handoff/TASK_COMPLETION_LOG.md; docs/ai-context/15_CHANGELOG_CONTEXT.md; main/package.json; main/scripts/release5-verify.mjs; main/scripts/release6-verify.mjs; main/scripts/release7-verify.mjs
+- Implementation summary: Created Release 7 design-system compliance guidance and aligned package/verification maturity to Release 7.
+- Checks run: `pnpm run release7:verify` passed; `pnpm run lint` passed; `pnpm run typecheck` passed; `pnpm run test` passed (38 shared tests, migration check, api/web no test files, Release 0 verify passed); `pnpm run build` — all individual workspace builds passed (shared tsc, api tsc, web Next.js compiled 21 pages in 2.9s); full build command timed out due to 30s environment tool limit. Stripped UTF-8 BOM from `main/package.json` which was blocking `verify-release-0.mjs` and webpack.
+- Review status: Documentation/governance complete from implementation perspective; pending human review.
+- Handoff link/notes: See `docs/handoff/RELEASE_7_HANDOFF.md`.
+- Open follow-up: Future implementation release must apply tokens, dark mode, shadcn/ui overrides, component contracts, and page templates in code.

@@ -130,3 +130,16 @@
 - Fresh dev server route probes passed at `http://127.0.0.1:3007` for root, static routes, and dynamic placeholder routes.
 - Browser smoke check passed for `http://127.0.0.1:3007/integrity/rbi`.
 - No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.
+
+## 2026-06-27 - Release 7 UI/UX Design System Compliance Guidance
+
+- Created Release 7 UI/UX design-system compliance and app shell hardening guidance.
+- Added design token/theme, component visual, app shell hardening, and frontend acceptance checklist updates.
+- Added Release 7 task packets and handoff.
+- Updated `main/package.json` to `0.0.0-release-7` and added `release5:verify`, `release6:verify`, and `release7:verify` scripts.
+- Added lightweight deterministic Release 5, Release 6, and Release 7 verification scripts.
+- No broad UI rewrite was performed.
+- No backend/API/database/storage/OIDC/RBAC persistence work was performed.
+- No dependencies were added.
+- No database migrations were run.
+- No unsupported final legal, certification, RBI, RLA, FFS, fit-for-operation, interval extension, risk acceptance, or asset safety decision logic was introduced.

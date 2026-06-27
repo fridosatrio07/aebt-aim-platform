@@ -99,3 +99,18 @@ Release 6 task checkboxes may only be marked complete after the specific task fi
 
 
 
+
+## Release 7 - UI/UX Design System Compliance & App Shell Hardening
+
+- [x] R7-01 - Release 7 Source Review and Documentation Consistency Check
+- [x] R7-02 - Design Token and Theme Contract
+- [x] R7-03 - Semantic Status, Badge, and Operational State Contract
+- [x] R7-04 - shadcn/ui Override and Reusable Component Visual Contract
+- [x] R7-05 - Page Template, Density, and Table/Drawer Pattern Rules
+- [x] R7-06 - App Shell, Route Page Shell, Sidebar, and Topbar Hardening Rules
+- [x] R7-07 - Accessibility, Dark Mode, and Non-Color-Only Status Baseline
+- [x] R7-08 - Export Warning, Evidence Visibility, and Draft/Preliminary Label Rules
+- [x] R7-09 - Package Metadata and Release Verification Maturity Alignment
+- [x] R7-10 - Release 7 Verification and Handoff
+
+Release 7 task checkboxes may only be marked complete after the specific task file shows `Done`, required checks are completed, and handoff notes are filled.

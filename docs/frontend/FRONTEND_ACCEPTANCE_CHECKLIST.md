@@ -53,3 +53,23 @@
 - [x] Dynamic placeholder routes build successfully.
 - [x] Route pages show Mock/API-ready/Pending Backend/Needs Review/Draft labels.
 - [x] Browser smoke check passed at `http://127.0.0.1:3007/integrity/rbi`.
+
+## Release 7 Design-System Compliance
+
+- [x] Release 7 design-system compliance guidance exists.
+- [x] Industrial Integrity Command Console direction is documented.
+- [x] Anti-generic SaaS rule is documented.
+- [x] Token coverage requirements are documented.
+- [x] AEBT Precision Light and AEBT Control Room Dark themes are specified.
+- [x] No hard-coded color rule is documented for final page components when a token exists.
+- [x] Dark mode layered surface rule is documented.
+- [x] Semantic badge families are specified conceptually.
+- [x] Page templates are specified for dashboard, list, detail, workflow, review queue, and evidence/export pages.
+- [x] Shell status labels are specified.
+- [x] Draft/preliminary output visibility is required.
+- [x] Export warning behavior is specified.
+- [x] Accessibility baseline is specified.
+- [x] Release 7 metadata and verification scripts are aligned.
+- [ ] Full component/page token refactor completed in code.
+- [ ] Dark mode visually implemented and reviewed.
+- [ ] Project Owner/UBT/IT/Legal/Q&C/SME manual review completed.
